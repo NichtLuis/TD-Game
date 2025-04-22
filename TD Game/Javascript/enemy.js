@@ -1,5 +1,5 @@
-class enemy {
-    constructor(x, y, speed, money, health, damage, flying) {
+class Enemy {
+    constructor(x, y, speed, money, health, damage, flying, width, height, image) {
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -7,10 +7,15 @@ class enemy {
         this.health = health; // Health of the enemy
         this.damage = damage; // Damage dealt by the enemy   
         this.flying = flying;
-        this.width = 64;
-        this.height = 64;
-        this.image = new Image();
-        this.image.src = "enemy.png"; // Path to enemy image
+        this.width = width;
+        this.height = height;
+
+        if (image) {
+            this.image = new Image();
+            this.image.src = image;
+        } else {
+            this.image = null; // If no image is provided, set it to null
+        }
     }
 
     //draw(ctx) {
