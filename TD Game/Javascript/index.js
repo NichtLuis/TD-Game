@@ -1,5 +1,5 @@
 var canvas = document.querySelector("canvas"); 
-var context =canvas.getContext("2d")
+var ctx =canvas.getContext("2d")
 
 var tilesizeheight=64
 var tilesizewidth=64
