@@ -21,7 +21,7 @@ Angriff
 - Bogenschuss
 - Laserpistole
 - Pistole
-- Sturmgewehr
+- Sturmgewehr ✓
 - Mini-Gun
 - Plasmagewehr ✓
 - Messer
