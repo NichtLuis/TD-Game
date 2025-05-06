@@ -15,6 +15,7 @@ To Do
 - Level verliert
 - Bossmusik
 - Zombiesounds
+- Munitionleer
 
 Angriff
 - Bogenschuss
