@@ -1,8 +1,8 @@
 # TD-Game
 To Do
-- Spielmusik
+- Spielmusik ✓
 - Startsound Anfang
-- Clicksound Menü
+- Clicksound Menü ✓
 - Lobbymusik
 - Platzieren
 - (Löschen)
@@ -12,10 +12,9 @@ To Do
 - Character freischalten
 - (Boost)
 - level gewinnt
-- Level verliert
-- Bossmusik
+- Level verliert ✓
+- Bossmusik ✓
 - Zombiesounds
-- Map Übersichtsmusik
 - (Nicht genug Geld)
 
 Angriff
@@ -24,10 +23,10 @@ Angriff
 - Pistole
 - Sturmgewehr
 - Mini-Gun
-- Plasmagewehr
+- Plasmagewehr ✓
 - Messer
 - Strahl
 - Schwert
 - Zauber
-- Tesla Strahl
+- Tesla Strahl ✓
 - Explosion
