@@ -10,6 +10,11 @@ To Do
 - Level up
 - Kaufsound (Shop)
 - Character freischalten
+- Boost
+- level gewinnt
+- Level verliert
+- Bossmusik
+- Zombiesounds
 
 Angriff
 - Bogenschuss
@@ -18,3 +23,7 @@ Angriff
 - Sturmgewehr
 - Mini-Gun
 - Plasmagewehr
+- Messer
+- Strahl
+- Schwert
+- Zauber
