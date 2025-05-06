@@ -1,10 +1,20 @@
 # TD-Game
-Soundplan:
+To Do
+- Spielmusik
+- Startsound Anfang
+- Clicksound Menü
+- Lobbymusik
+- Platzieren
+- Löschen
+- Bearbeiten (Click Sound)
+- Level up
+- Kaufsound (Shop)
+- Character freischalten
 
--Lobby Musik (Playlist)
-
--Soundeffectes (Zombies, Upgrades, etc.)
-
--Ingame Musik (verschiedene level)
-
--Win-Lose Sound
+Angriff
+- Bogenschuss
+- Laserpistole
+- Pistole
+- Sturmgewehr
+- Mini-Gun
+- Plasmagewehr
