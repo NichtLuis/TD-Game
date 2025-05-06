@@ -30,3 +30,4 @@ Angriff
 - Zauber
 - Tesla Strahl ✓
 - Explosion
+- Kanonenschuss ✓ 
