@@ -4,7 +4,6 @@ var ctx =canvas.getContext("2d")
 var tilesizeheight=64
 var tilesizewidth=64
 
-
 var map=[
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
