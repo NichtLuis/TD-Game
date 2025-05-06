@@ -5,17 +5,18 @@ To Do
 - Clicksound Menü
 - Lobbymusik
 - Platzieren
-- Löschen
+- (Löschen)
 - Bearbeiten (Click Sound)
 - Level up
 - Kaufsound (Shop)
 - Character freischalten
-- Boost
+- (Boost)
 - level gewinnt
 - Level verliert
 - Bossmusik
 - Zombiesounds
-- Munitionleer
+- Map Übersichtsmusik
+- (Nicht genug Geld)
 
 Angriff
 - Bogenschuss
@@ -28,3 +29,5 @@ Angriff
 - Strahl
 - Schwert
 - Zauber
+- Tesla Strahl
+- Explosion
