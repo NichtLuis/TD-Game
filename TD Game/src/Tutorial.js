@@ -7,6 +7,11 @@ var tilesizewidth=64
 var mappng = new Image();       //new picture
 mappng.src ="images/images-map/map.desinge.final.png"//getting the map.png
 
+import * as enemy from "../enemy.js";
+
+
+
+
 var map=[
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -21,6 +26,7 @@ var map=[
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ];
+
 function hintergrund(){
     for (let y = 0; y < 12; y++) {
         for (let x = 0; x < 20; x++) {
@@ -37,4 +43,7 @@ function zeichne(){
 mappng.onload=function (){
     zeichne(); //Bild zeichnen, wenn Sprite geladen wurde. Wird einmal bei Start ausgeführt, da sonst ein leerer Bildschirm erscheinen würde.
 }
+
+
+var Monster = new enemy(1*tilesizewidth,1*tilesizeheight,6,3,1,5,0,false,1,1);
 
