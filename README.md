@@ -22,7 +22,7 @@ Sound:
 - (Nicht genug Geld)
 
 Angriff
-- Bogenschuss
+- Bogenschuss ✓
 - Laserpistole ✓
 - Pistole
 - Sturmgewehr ✓
