@@ -9,6 +9,8 @@ mappng.src = "images/images-map/map.desinge.final.png"; //getting the map.png
 
 //import * as enemy from "../enemy.js";
 
+var towers = [];
+
 var map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -24,10 +26,49 @@ var map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
+var towerLayer = [
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+
+function tryPlaceTower(x, y) {
+  for (let dy = 0; dy < 2; dy++) {
+    for (let dx = 0; dx < 2; dx++) {
+      towerLayer[y + dy][x + dx] = 2;
+    }
+  }
+}
+
+function drawTowers() {
+  for (let y = 0; y < 12; y++) {
+    for (let x = 0; x < 20; x++) {
+      if (towerLayer[y][x] == 2) {
+        ctx.fillStyle = "red";
+        ctx.fillRect(
+          x * tilesizewidth,
+          y * tilesizeheight,
+          tilesizewidth,
+          tilesizeheight
+        );
+      }
+    }
+  }
+}
+
 function hintergrund() {
   for (let y = 0; y < 12; y++) {
     for (let x = 0; x < 20; x++) {
-      if ((map[y][x] = 1)) {
+      if (map[y][x] == 1) {
         ctx.drawImage(
           mappng,
           (x + 0) * tilesizewidth,
@@ -43,9 +84,13 @@ function hintergrund() {
     }
   }
 }
+
+tryPlaceTower(0, 0); // Example of placing a tower
+
 function zeichne() {
   ctx.clearRect(0, 0, 1280, 768); //Hintergrund löschen
   hintergrund(); //Hintergrund neu zeichnen
+  drawTowers(); //Türme zeichnen
 }
 mappng.onload = function () {
   zeichne(); //Bild zeichnen, wenn Sprite geladen wurde. Wird einmal bei Start ausgeführt, da sonst ein leerer Bildschirm erscheinen würde.

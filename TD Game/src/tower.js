@@ -1,6 +1,5 @@
 class tower {
-  constructor(id, x, y, damage, fireRate, range, hitflying, image, sound) {
-    this.id = id;
+  constructor(x, y, damage, fireRate, range, hitflying, image, sound) {
     this.x = x;
     this.y = y;
     this.damage = damage;
@@ -26,7 +25,7 @@ class tower {
     ctx.closePath();
   }
 
-  shoot(target){
+  shoot(target) {
     if (this.canShoot(target)) {
       this.lastShotTime = Date.now();
       this.projectile = new projectile(this.x, this.y, target.x, target.y);
