@@ -11,7 +11,7 @@ Sound:
 - Clicksound Menü ✓
 - Platzieren ✓
 - (Löschen)
-- Bearbeiten (Click Sound)
+- Bearbeiten (Click Sound) ✓
 - Level up
 - Kaufsound (Shop)
 - Character freischalten
