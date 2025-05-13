@@ -30,7 +30,7 @@ Angriff
 - Plasmagewehr ✓
 - Messer
 - Strahl
-- Schwert
+- Schwert ✓
 - Zauber
 - Tesla Strahl ✓
 - Explosion
