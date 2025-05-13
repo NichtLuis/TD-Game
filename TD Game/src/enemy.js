@@ -1,11 +1,11 @@
-export class Enemy {
+class Enemy {
     constructor(x, y, speed, money, health, damage, flying, width, height, image) {
         this.x = x;
         this.y = y;
-        this.health = health; // Health of the enemy
         this.speed = speed;
-        this.damage = damage; // Damage dealt by the enemy   
         this.money = money;
+        this.health = health; // Health of the enemy
+        this.damage = damage; // Damage dealt by the enemy   
         this.flying = flying;
         this.width = width;
         this.height = height;
