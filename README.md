@@ -9,7 +9,7 @@ Musik:
 Sound:
 - Startsound Anfang
 - Clicksound Menü ✓
-- Platzieren
+- Platzieren ✓
 - (Löschen)
 - Bearbeiten (Click Sound)
 - Level up
@@ -18,12 +18,12 @@ Sound:
 - (Boost)
 - level gewinnt
 - Level verliert ✓
-- Zombiesounds
+- Zombiesounds ✓
 - (Nicht genug Geld)
 
 Angriff
 - Bogenschuss
-- Laserpistole
+- Laserpistole ✓
 - Pistole
 - Sturmgewehr ✓
 - Mini-Gun
