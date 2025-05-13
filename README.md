@@ -1,9 +1,14 @@
 # TD-Game
 To Do
+
+Musik:
 - Spielmusik ✓
+- Bossmusik ✓
+- Lobbymusik
+
+Sound:
 - Startsound Anfang
 - Clicksound Menü ✓
-- Lobbymusik
 - Platzieren
 - (Löschen)
 - Bearbeiten (Click Sound)
@@ -13,7 +18,6 @@ To Do
 - (Boost)
 - level gewinnt
 - Level verliert ✓
-- Bossmusik ✓
 - Zombiesounds
 - (Nicht genug Geld)
 
