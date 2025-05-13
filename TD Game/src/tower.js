@@ -11,9 +11,12 @@ class tower {
 
     if (image) {
       this.image = new Image();
+      this.imageR = new Image(); // imageR = rotating image
       this.image.src = image;
+      this.imageR.src = imageR;
     } else {
       this.image = null; // If no image is provided, set it to null
+      this.imageR = null;
     }
   }
 
