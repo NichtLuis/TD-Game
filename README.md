@@ -15,8 +15,8 @@ Sound:
 - Level up
 - Kaufsound (Shop)
 - Character freischalten
-- (Boost) (✓)
-- level gewinnt (✓)
+- Boost ✓
+- level gewinnt ✓
 - Level verliert ✓
 - Zombiesounds ✓
 - (Nicht genug Geld)
@@ -24,11 +24,11 @@ Sound:
 Angriff
 - Bogenschuss ✓
 - Laserpistole ✓
-- Pistole (✓)
+- Pistole ✓
 - Sturmgewehr ✓
-- Mini-Gun (✓)
+- Mini-Gun ✓
 - Plasmagewehr ✓
-- Messer
+- Messer✓
 - Strahl
 - Schwert ✓
 - Zauber
