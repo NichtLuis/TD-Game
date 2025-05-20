@@ -3,8 +3,8 @@ To Do
 
 Musik:
 - Spielmusik ✓
-- Bossmusik ✓
-- Lobbymusik
+- Bossmusik 
+- Lobbymusik ✓
 
 Sound:
 - Startsound Anfang
@@ -31,7 +31,7 @@ Angriff
 - Messer✓
 - Strahl
 - Schwert ✓
-- Zauber
+- Zauber ✓
 - Tesla Strahl ✓
 - Explosion
 - Kanonenschuss ✓ 
