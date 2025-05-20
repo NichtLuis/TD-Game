@@ -72,21 +72,21 @@ const pfad = [
   { x: 768, y: 1088 }, { x: 768, y: 1152 }, { x: 768, y: 1216 },
 ];
 
-const enemyImg = new Image();
-enemyImg.src = "gegner.png"; // Deine PNG-Datei
+//const enemyImg = new Image();
+//enemyImg.src = "gegner.png"; // Deine PNG-Datei
 
 let pos = { x: pfad[0].x * TILE_SIZE, y: pfad[0].y * TILE_SIZE };
 let zielIndex = 1;
 const speed = 1.5;
 
-function zeichneMap() {
-  for (let y = 0; y < map.length; y++) {
-    for (let x = 0; x < map[y].length; x++) {
-      ctx.fillStyle = map[y][x] === 1 ? "#ccc" : "#333";
-      ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-    }
-  }
-}
+//function zeichneMap() {
+//  for (let y = 0; y < map.length; y++) {
+//    for (let x = 0; x < map[y].length; x++) {
+//       ctx.fillStyle = map[y][x] === 1 ? "#ccc" : "#333";
+//       ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+//    }
+//  }
+//}
 
 function bewegeGegner() {
   if (zielIndex >= pfad.length) return;
