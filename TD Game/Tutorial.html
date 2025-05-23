@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link type="text/css" rel="stylesheet" href="./style.css" />
-</head>
-<body>
-    <canvas id="canvas" width="1280" height="768"></canvas>
+  </head>
+  <body>
+    <div style="position: relative; width: 1280px; height: 768px">
+      <canvas
+        id="backgroundCanvas"
+        width="1280"
+        height="768"
+        style="position: absolute; z-index: 1"
+      ></canvas>
+      <canvas
+        id="towerCanvas"
+        width="1280"
+        height="768"
+        style="position: absolute; z-index: 2; background-color: transparent"
+      ></canvas>
+    </div>
     <script src="./src/Tutorial.js" type="module"></script>
-</body>
+  </body>
 </html>
