@@ -17,6 +17,7 @@ Sound:
 - Character freischalten
 - Boost ✓
 - level gewinnt ✓
+- Level up ✓
 - Level verliert ✓
 - Zombiesounds ✓
 - (Nicht genug Geld)
@@ -33,5 +34,5 @@ Angriff
 - Schwert ✓
 - Zauber ✓
 - Tesla Strahl ✓
-- Explosion
+- Explosion ✓
 - Kanonenschuss ✓ 
