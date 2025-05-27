@@ -1,8 +1,26 @@
-body{
-    background-color: rgb(138, 138, 138);
+body {
+  background-color: rgb(138, 138, 138);
+  margin: 0;
+  padding: 0;
 }
 
-canvas{
-    background-color: white;
-    background-position: center;
+canvas {
+  background-color: white;
+  background-position: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tower-selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#tower1:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }

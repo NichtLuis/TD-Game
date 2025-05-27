@@ -1,5 +1,16 @@
 class tower {
-  constructor(x, y, damage, fireRate, range, hitflying, image, sound) {
+  constructor(
+    x,
+    y,
+    damage,
+    fireRate,
+    range,
+    hitflying,
+    image,
+    imageR,
+    sound,
+    placeId
+  ) {
     this.x = x;
     this.y = y;
     this.damage = damage;
@@ -8,16 +19,7 @@ class tower {
     this.hitflying = hitflying;
     this.sound = sound;
     this.lastShotTime = 0;
-
-    if (image) {
-      this.image = new Image();
-      this.imageR = new Image(); // imageR = rotating image
-      this.image.src = image;
-      this.imageR.src = imageR;
-    } else {
-      this.image = null; // If no image is provided, set it to null
-      this.imageR = null;
-    }
+    this.placeId = placeId;
   }
 
   draw(ctx) {
@@ -44,7 +46,11 @@ class tower {
 
 class tower_normal extends tower {
   constructor(x, y) {
-    super(x, y, 20, 10, 1000, 100, false);
+    super(x, y, 20, 10, 1000, false);
+    this.placeId = 2; // Unique ID for this tower type
+    this.image = new Image();
+    this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
+    this.image.src = "images/images-enemy/BigGuyWalkAnimatin.png";
   }
 
   canShoot(target) {
@@ -98,3 +104,5 @@ class tower_smg extends tower {
     return distance <= this.range;
   }
 }
+
+export { tower_normal, tower_cannon, tower_smg };

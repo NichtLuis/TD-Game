@@ -7,19 +7,25 @@
     <link type="text/css" rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div style="position: relative; width: 1280px; height: 768px">
-      <canvas
-        id="backgroundCanvas"
-        width="1280"
-        height="768"
-        style="position: absolute; z-index: 1"
-      ></canvas>
-      <canvas
-        id="towerCanvas"
-        width="1280"
-        height="768"
-        style="position: absolute; z-index: 2; background-color: transparent"
-      ></canvas>
+    <div class="container">
+      <div style="position: relative; width: 1280px; height: 768px">
+        <canvas
+          id="backgroundCanvas"
+          width="1280"
+          height="768"
+          style="position: absolute; z-index: 1"
+        ></canvas>
+        <canvas
+          id="towerCanvas"
+          width="1280"
+          height="768"
+          style="position: absolute; z-index: 2; background-color: transparent"
+        ></canvas>
+      </div>
+      <div class="tower-selection">
+        <div class="tower" id="tower1">
+          <img src="./images/tem_tower_tesla.png" alt="Tower 1" />
+      </div>
     </div>
     <script src="./src/Tutorial.js" type="module"></script>
   </body>
