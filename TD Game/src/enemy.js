@@ -99,7 +99,7 @@ enemyImg.src = "images/enemy.png"; // Pfad zum Gegnerbild
 
 let pos = { x: pfad[0].x * TILE_SIZE, y: pfad[0].y * TILE_SIZE };
 let zielIndex = 1;
-const speed = speed; // Geschwindigkeit des Gegners in Pixel pro Frame
+//const speed = speed; // Geschwindigkeit des Gegners in Pixel pro Frame
 
 
 function bewegeGegner() {
