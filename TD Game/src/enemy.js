@@ -60,3 +60,75 @@ export{enemy_normal,enemy_speedey,enemy_flying,enemy_tank,enemy_miniboss,enemy_b
             super(x, y, 100, 0.5, 200, 0, 0, false, 0, 0)
         }
     }
+
+var canvas = document.querySelector("canvas");
+var ctx = canvas.getContext("2d");
+
+/// 
+const TILE_SIZE = 64;
+
+// Beispiel-Map: 0 = Wand, 1 = Weg
+const map = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+];
+
+// Pfad für Gegner: Reihe von Zellen auf dem Weg
+const pfad = [
+  { x: 0, y: 448 }, { x: 64, y: 448 }, { x: 128, y: 448 }, { x: 192, y: 448 },
+  { x: 256, y: 448 }, { x: 256, y: 448 }, { x: 256, y: 448 }, { x: 320, y: 448 },
+  { x: 384, y: 448 }, { x: 448, y: 448 }, { x: 512, y: 448 }, { x: 512, y: 384 },
+  { x: 512, y: 320 }, { x: 576, y: 320 }, { x: 640, y: 320 }, { x: 704, y: 320 },
+  { x: 768, y: 320 }, { x: 768, y: 320 }, { x: 768, y: 320 }, { x: 768, y: 320 },
+  { x: 832, y: 320 }, { x: 768, y: 896 }, { x: 768, y: 960 }, { x: 768, y: 1024 },
+  { x: 768, y: 1088 }, { x: 768, y: 1152 }, { x: 768, y: 1216 },
+];
+
+const enemyImg = new Image();
+enemyImg.src = "images/enemy.png"; // Pfad zum Gegnerbild
+
+let pos = { x: pfad[0].x * TILE_SIZE, y: pfad[0].y * TILE_SIZE };
+let zielIndex = 1;
+//const speed = speed; // Geschwindigkeit des Gegners in Pixel pro Frame
+
+
+function bewegeGegner() {
+  if (zielIndex >= pfad.length) return;
+
+  const ziel = {
+    x: pfad[zielIndex].x * TILE_SIZE,
+    y: pfad[zielIndex].y * TILE_SIZE
+  };
+
+  const dx = ziel.x - pos.x;
+  const dy = ziel.y - pos.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+
+  if (dist < speed) {
+    pos.x = ziel.x;
+    pos.y = ziel.y;
+    zielIndex++;
+  } else {
+    pos.x += (dx / dist) * speed;
+    pos.y += (dy / dist) * speed;
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(enemyImg, pos.x, pos.y, TILE_SIZE, TILE_SIZE);
+
+  requestAnimationFrame(bewegeGegner);
+}
+
+enemyImg.onload = () => {
+  requestAnimationFrame(bewegeGegner);
+};

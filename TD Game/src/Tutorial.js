@@ -15,7 +15,7 @@ mappng.src = "images/images-map/map.desinge.final.png"; //getting the map.png
 var enemyn = new Image();
 enemyn.src = "images/images-enemy/BigGuyWalkAnimatin.png";
 
-import { enemy_normal } from "./enemy.js";
+// import { enemy_normal } from "./enemy.js";
 import { enemy_speedey } from "./enemy.js";
 import { enemy_flying } from "./enemy.js";
 import { enemy_tank } from "./enemy.js";
