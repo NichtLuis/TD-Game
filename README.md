@@ -21,6 +21,7 @@ Sound:
 - Level verliert ✓
 - Zombiesounds ✓
 - (Nicht genug Geld)
+- Gegener dead ✓
 
 Angriff
 - Bogenschuss ✓
