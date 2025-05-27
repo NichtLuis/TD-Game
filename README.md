@@ -10,7 +10,7 @@ Sound:
 - (Startsound Anfang)
 - Clicksound Menü ✓
 - Platzieren ✓
-- (Löschen)
+- Löschen ✓
 - Bearbeiten (Click Sound) ✓
 - Level up ✓
 - Kaufsound (Shop) ✓ 
