@@ -13,7 +13,7 @@ Sound:
 - (Löschen)
 - Bearbeiten (Click Sound) ✓
 - Level up ✓
-- Kaufsound (Shop)
+- Kaufsound (Shop) ✓ 
 - Character freischalten
 - Boost ✓
 - level gewinnt ✓
