@@ -3,16 +3,16 @@ To Do
 
 Musik:
 - Spielmusik ✓
-- Bossmusik 
+- Bossmusik ✓
 - Lobbymusik ✓
 
 Sound:
-- Startsound Anfang
+- (Startsound Anfang)
 - Clicksound Menü ✓
 - Platzieren ✓
 - (Löschen)
 - Bearbeiten (Click Sound) ✓
-- Level up
+- Level up ✓
 - Kaufsound (Shop)
 - Character freischalten
 - Boost ✓
