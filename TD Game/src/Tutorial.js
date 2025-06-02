@@ -71,9 +71,6 @@ function tryPlaceTower(tower) {
   towerLayer[tower.y + 1][tower.x + 1] = 0;
 }
 
-const tower1 = new tower_normal(1, 4);
-tryPlaceTower(tower1); // Place a tower at (4, 1)
-
 function drawTowers() {
   towerCtx.clearRect(0, 0, 1280, 768); // Clear the tower canvas
   for (let y = 0; y < 12; y++) {
@@ -139,6 +136,7 @@ function zeichne() {
   }
 }
 
+// hover effect
 document.onmousemove = (event) => {
   towerCtx.clearRect(0, 0, 1280, 768); // Clear previous highlights and towers
   drawTowers(); // Redraw towers
@@ -146,7 +144,7 @@ document.onmousemove = (event) => {
   const x_tile = Math.floor(event.offsetX / tilesizewidth);
   const y_tile = Math.floor(event.offsetY / tilesizeheight);
 
-  // Possible 2x2 block offsets: [dx, dy]
+  // Possible offsets
   const offsets = [
     [0, 0], // bottom-right
     [0, -1], // top-right
@@ -186,7 +184,6 @@ document.onclick = (event) => {
   const x_tile = Math.floor(event.offsetX / tilesizewidth);
   const y_tile = Math.floor(event.offsetY / tilesizeheight);
 
-  // Possible 2x2 block offsets: [dx, dy]
   const offsets = [
     [0, 0], // bottom-right
     [0, -1], // top-right
@@ -197,7 +194,6 @@ document.onclick = (event) => {
   for (const [dx, dy] of offsets) {
     const x = x_tile + dx;
     const y = y_tile + dy;
-    // Check bounds and if the position is valid for placing a tower
     if (
       x >= 0 &&
       x + 1 < 20 &&

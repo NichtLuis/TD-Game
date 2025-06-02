@@ -15,12 +15,13 @@ canvas {
 }
 
 .tower-selection {
+  margin: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-#tower1:hover {
+.tower:hover {
   cursor: pointer;
   transform: scale(1.1);
 }
