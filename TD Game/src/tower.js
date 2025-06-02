@@ -50,7 +50,7 @@ class tower_normal extends tower {
     this.placeId = 2; // Unique ID for this tower type
     this.image = new Image();
     this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
-    this.image.src = "images/images-enemy/BigGuyWalkAnimatin.png";
+    this.image.src = "images/towerAnim/tesla/turm1.5.png";
   }
 
   canShoot(target) {
@@ -69,7 +69,11 @@ class tower_normal extends tower {
 
 class tower_cannon extends tower {
   constructor(x, y) {
-    super(x, y, 20, 20, 2000, 150, true);
+    super(x, y, 50, 2, 1000, false);
+    this.placeId = 3; // Unique ID for this tower type
+    this.image = new Image();
+    this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
+    this.image.src = "images/towerAnim/cannon/turm_vorne-removebg-preview.png";
   }
 
   canShoot(target) {

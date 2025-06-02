@@ -1,4 +1,4 @@
-import { tower_normal } from "./tower.js";
+import { tower_normal, tower_cannon, tower_smg } from "./tower.js";
 
 // Get references to the canvases and their contexts
 var backgroundCanvas = document.getElementById("backgroundCanvas");
@@ -11,9 +11,9 @@ var tilesizeheight = 64;
 var tilesizewidth = 64;
 
 var mappng = new Image(); //new picture
-mappng.src = "images/images-map/map.desinge.final.png"; //getting the map.png
+mappng.src = "images/maps/map.desinge.final.png"; //getting the map.png
 var enemyn = new Image();
-enemyn.src = "images/images-enemy/BigGuyWalkAnimatin.png";
+enemyn.src = "images/GegenerAnim/BigGuyWalkAnimatin.png";
 
 // import { enemy_normal } from "./enemy.js";
 import { enemy_speedey } from "./enemy.js";
@@ -23,7 +23,7 @@ import { enemy_miniboss } from "./enemy.js";
 import { enemy_boss } from "./enemy.js";
 
 let image = new Image();
-image.src = "images/tem_tower_tesla.png"; // Example tower image
+image.src = "images/towerAnim/tesla/turm1.5.png"; // Example tower image
 
 var towers = [];
 
@@ -75,15 +75,18 @@ function drawTowers() {
   towerCtx.clearRect(0, 0, 1280, 768); // Clear the tower canvas
   for (let y = 0; y < 12; y++) {
     for (let x = 0; x < 20; x++) {
+      // Find a tower at this position in the towers array
+      const tower = towers.find((t) => t.x === x && t.y === y);
       if (
-        towerLayer[y][x] == 2 &&
+        tower &&
+        towerLayer[y][x] == tower.placeId &&
         towerLayer[y][x + 1] == 0 &&
         towerLayer[y + 1][x] == 0 &&
         towerLayer[y + 1][x + 1] == 0
       ) {
-        // Draw the tower image at the top-left corner of the 2x2 block
+        // Draw the tower's image at the top-left corner of the 2x2 block
         towerCtx.drawImage(
-          image,
+          tower.image,
           x * tilesizewidth,
           y * tilesizeheight,
           128,
@@ -180,6 +183,20 @@ document.onmousemove = (event) => {
   }
 };
 
+// Tower selection logic
+let selectedTowerType = "normal"; // default
+
+const towerElements = document.querySelectorAll(".tower-selection .tower");
+towerElements.forEach((el) => {
+  el.addEventListener("click", function () {
+    towerElements.forEach((e) => e.classList.remove("selected"));
+    this.classList.add("selected");
+    selectedTowerType = this.getAttribute("data-tower-type");
+  });
+});
+// Set initial selection
+document.getElementById("tower1").classList.add("selected");
+
 document.onclick = (event) => {
   const x_tile = Math.floor(event.offsetX / tilesizewidth);
   const y_tile = Math.floor(event.offsetY / tilesizeheight);
@@ -204,7 +221,17 @@ document.onclick = (event) => {
       towerLayer[y + 1][x] == 1 &&
       towerLayer[y + 1][x + 1] == 1
     ) {
-      const newTower = new tower_normal(x, y);
+      let newTower;
+      if (selectedTowerType === "normal") {
+        newTower = new tower_normal(x, y);
+      } else if (selectedTowerType === "cannon") {
+        newTower = new tower_cannon(x, y);
+      } else if (selectedTowerType === "smg") {
+        newTower = new tower_smg(x, y);
+      } else {
+        newTower = new tower_normal(x, y); // fallback
+      }
+      towers.push(newTower); // Store the tower instance
       tryPlaceTower(newTower);
       drawTowers();
       break; // Only place one tower at a time
