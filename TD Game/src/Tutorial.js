@@ -85,12 +85,17 @@ function drawTowers() {
         towerLayer[y + 1][x + 1] == 0
       ) {
         // Draw the tower's image at the top-left corner of the 2x2 block
+        // if its tower1 a margin is added to rearrange the image
+        const yOffset = tower.placeId === 2 ? -30 : 0;
+        const width = tower.placeId === 2 ? 140 : 128; // Resize Tower 1's width
+        const height = tower.placeId === 2 ? 140 : 128; // Resize Tower 1's height
+
         towerCtx.drawImage(
           tower.image,
           x * tilesizewidth,
-          y * tilesizeheight,
-          128,
-          128
+          y * tilesizeheight + yOffset,
+          width,
+          height
         );
       }
     }
@@ -141,13 +146,48 @@ function zeichne() {
 
 // hover effect
 document.onmousemove = (event) => {
-  towerCtx.clearRect(0, 0, 1280, 768); // Clear previous highlights and towers
   drawTowers(); // Redraw towers
 
-  const x_tile = Math.floor(event.offsetX / tilesizewidth);
-  const y_tile = Math.floor(event.offsetY / tilesizeheight);
+  const mouseX = event.offsetX;
+  const mouseY = event.offsetY;
 
-  // Possible offsets
+  // Check if the mouse is hovering over an existing tower
+  const tower = towers.find((t) => {
+    const yOffset = t.placeId === 2 ? -30 : 0;
+    const width = t.placeId === 2 ? 140 : 128; // Tower width
+    const height = t.placeId === 2 ? 140 : 128; // Tower height
+
+    const towerX = t.x * tilesizewidth;
+    const towerY = t.y * tilesizeheight + yOffset;
+
+    return (
+      mouseX >= towerX &&
+      mouseX <= towerX + width &&
+      mouseY >= towerY &&
+      mouseY <= towerY + height
+    );
+  });
+
+  if (tower) {
+    // Highlight the existing tower
+    const yOffset = tower.placeId === 2 ? -30 : 0;
+    const width = tower.placeId === 2 ? 140 : 128; // Tower width
+    const height = tower.placeId === 2 ? 140 : 128; // Tower height
+
+    towerCtx.globalAlpha = 0.8;
+    towerCtx.strokeStyle = "yellow"; // Highlight color
+    towerCtx.lineWidth = 3;
+    towerCtx.strokeRect(
+      tower.x * tilesizewidth,
+      tower.y * tilesizeheight + yOffset,
+      width,
+      height
+    );
+    towerCtx.globalAlpha = 1;
+    return; // Skip further hover logic
+  }
+
+  // Possible offsets for placing a new tower
   const offsets = [
     [0, 0], // bottom-right
     [0, -1], // top-right
@@ -156,28 +196,62 @@ document.onmousemove = (event) => {
   ];
 
   for (const [dx, dy] of offsets) {
-    const x = x_tile + dx;
-    const y = y_tile + dy;
+    const x_tile = Math.floor(mouseX / tilesizewidth) + dx;
+    const y_tile = Math.floor(mouseY / tilesizeheight) + dy;
+
     // Check bounds
     if (
-      x >= 0 &&
-      x + 1 < 20 &&
-      y >= 0 &&
-      y + 1 < 12 &&
-      towerLayer[y][x] == 1 &&
-      towerLayer[y][x + 1] == 1 &&
-      towerLayer[y + 1][x] == 1 &&
-      towerLayer[y + 1][x + 1] == 1
+      x_tile >= 0 &&
+      x_tile + 1 < 20 &&
+      y_tile >= 0 &&
+      y_tile + 1 < 12 &&
+      towerLayer[y_tile][x_tile] == 1 &&
+      towerLayer[y_tile][x_tile + 1] == 1 &&
+      towerLayer[y_tile + 1][x_tile] == 1 &&
+      towerLayer[y_tile + 1][x_tile + 1] == 1
     ) {
-      towerCtx.globalAlpha = 0.4;
-      towerCtx.fillStyle = "yellow";
-      towerCtx.fillRect(
-        x * tilesizewidth,
-        y * tilesizeheight,
-        2 * tilesizewidth,
-        2 * tilesizeheight
+      let previewTower;
+      if (selectedTowerType === "normal") {
+        previewTower = new tower_normal(x_tile, y_tile);
+      } else if (selectedTowerType === "cannon") {
+        previewTower = new tower_cannon(x_tile, y_tile);
+      } else if (selectedTowerType === "smg") {
+        previewTower = new tower_smg(x_tile, y_tile);
+      } else {
+        previewTower = new tower_normal(x_tile, y_tile);
+      }
+
+      const yOffset = previewTower.placeId === 2 ? -30 : 0;
+      const width = previewTower.placeId === 2 ? 140 : 128; // Resize Tower 1's width
+      const height = previewTower.placeId === 2 ? 140 : 128; // Resize Tower 1's height
+      // Draw the tower preview
+      towerCtx.globalAlpha = 0.6;
+      towerCtx.drawImage(
+        previewTower.image,
+        x_tile * tilesizewidth,
+        y_tile * tilesizeheight + yOffset,
+        width,
+        height
       );
-      towerCtx.globalAlpha = 1.0;
+
+      // Draw the range
+      towerCtx.beginPath();
+      towerCtx.arc(
+        x_tile * tilesizewidth + tilesizewidth,
+        y_tile * tilesizeheight + tilesizeheight,
+        previewTower.range,
+        0,
+        Math.PI * 2
+      );
+      towerCtx.fillStyle = "rgba(0,150,255,0.3)";
+      towerCtx.fill();
+      towerCtx.lineWidth = 2;
+      towerCtx.strokeStyle = "white";
+      towerCtx.stroke();
+      towerCtx.closePath();
+
+      towerCtx.globalAlpha = 1;
+
       break; // Only highlight the first valid position
     }
   }

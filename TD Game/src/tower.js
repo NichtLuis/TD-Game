@@ -46,7 +46,7 @@ class tower {
 
 class tower_normal extends tower {
   constructor(x, y) {
-    super(x, y, 20, 10, 1000, false);
+    super(x, y, 20, 10, 180, false);
     this.placeId = 2; // Unique ID for this tower type
     this.image = new Image();
     this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
@@ -69,7 +69,7 @@ class tower_normal extends tower {
 
 class tower_cannon extends tower {
   constructor(x, y) {
-    super(x, y, 50, 2, 1000, false);
+    super(x, y, 50, 2, 220, false);
     this.placeId = 3; // Unique ID for this tower type
     this.image = new Image();
     this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
