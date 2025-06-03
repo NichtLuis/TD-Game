@@ -169,21 +169,30 @@ document.onmousemove = (event) => {
   });
 
   if (tower) {
-    // Highlight the existing tower
+    // Highlight the existing tower with a shadow effect
     const yOffset = tower.placeId === 2 ? -30 : 0;
-    const width = tower.placeId === 2 ? 140 : 128; // Tower width
-    const height = tower.placeId === 2 ? 140 : 128; // Tower height
+    const width = tower.placeId === 2 ? 140 : 128;
+    const height = tower.placeId === 2 ? 140 : 128;
 
-    towerCtx.globalAlpha = 0.8;
-    towerCtx.strokeStyle = "yellow"; // Highlight color
-    towerCtx.lineWidth = 3;
-    towerCtx.strokeRect(
+    // Save current context state
+    towerCtx.save();
+    towerCtx.globalAlpha = 1;
+    towerCtx.shadowColor =
+      tower.placeId === 2 ? "rgba(133, 111, 50, 1)" : "rgba(138, 80, 15, 1)"; // gold/yellow shadow
+    towerCtx.shadowBlur = 25;
+    towerCtx.shadowOffsetX = 0;
+    towerCtx.shadowOffsetY = 0;
+
+    towerCtx.drawImage(
+      tower.image,
       tower.x * tilesizewidth,
       tower.y * tilesizeheight + yOffset,
       width,
       height
     );
-    towerCtx.globalAlpha = 1;
+
+    // Restore context state
+    towerCtx.restore();
     return; // Skip further hover logic
   }
 
