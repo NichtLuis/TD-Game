@@ -254,10 +254,24 @@ document.onmousemove = (event) => {
       );
       towerCtx.fillStyle = "rgba(0,150,255,0.3)";
       towerCtx.fill();
-      towerCtx.lineWidth = 2;
-      towerCtx.strokeStyle = "white";
+      towerCtx.lineWidth = 1;
+      towerCtx.strokeStyle = "rgb(0, 105, 180)";
       towerCtx.stroke();
       towerCtx.closePath();
+
+      // hover rect
+      // Draw a hover rectangle around the 2x2 tower placement area
+      towerCtx.save();
+      towerCtx.globalAlpha = 0.2;
+      towerCtx.fillStyle = "rgba(255, 255, 255, 0.36)";
+      towerCtx.fillRect(
+        x_tile * tilesizewidth,
+        y_tile * tilesizeheight,
+        tilesizewidth * 2,
+        tilesizeheight * 2
+      );
+
+      towerCtx.restore();
 
       towerCtx.globalAlpha = 1;
 
