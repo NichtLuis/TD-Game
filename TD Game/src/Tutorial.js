@@ -144,6 +144,58 @@ function zeichne() {
   }
 }
 
+// --- Tower selection menu logic ---
+let selectedPlacedTower = null;
+let towerMenu = null;
+let upgradeBtn = null;
+let sellBtn = null;
+
+function showTowerMenu(tower) {
+  // Use existing menu and buttons from the DOM
+  if (!towerMenu) {
+    towerMenu = document.getElementById("tower-menu");
+    upgradeBtn = document.getElementById("upgrade-btn");
+    sellBtn = document.getElementById("sell-btn");
+    if (upgradeBtn) {
+      upgradeBtn.onclick = (e) => {
+        e.stopPropagation();
+        // ...upgrade logic here...
+        hideTowerMenu();
+      };
+    }
+    if (sellBtn) {
+      sellBtn.onclick = (e) => {
+        e.stopPropagation();
+        // ...sell logic here...
+        hideTowerMenu();
+      };
+    }
+  }
+  if (!towerMenu) return; // If menu not found, do nothing
+
+  // Position menu above the tower
+  const rect = towerCanvas.getBoundingClientRect();
+  const yOffset = tower.placeId === 2 ? -30 : 0;
+  const width = tower.placeId === 2 ? 140 : 128;
+  const height = tower.placeId === 2 ? 140 : 128;
+  const menuX =
+    rect.left + window.scrollX + tower.x * tilesizewidth + width / 2 - 60;
+  const menuY =
+    rect.top + window.scrollY + tower.y * tilesizeheight + yOffset - 40;
+  towerMenu.style.position = "absolute";
+  towerMenu.style.left = `${menuX}px`;
+  towerMenu.style.top = `${menuY}px`;
+  towerMenu.style.display = "flex";
+  towerMenu.style.zIndex = 1000;
+}
+
+function hideTowerMenu() {
+  if (towerMenu) {
+    towerMenu.style.display = "none";
+  }
+  selectedPlacedTower = null;
+}
+
 // hover effect
 document.onmousemove = (event) => {
   drawTowers(); // Redraw towers
@@ -295,8 +347,41 @@ towerElements.forEach((el) => {
 document.getElementById("tower1").classList.add("selected");
 
 document.onclick = (event) => {
-  const x_tile = Math.floor(event.offsetX / tilesizewidth);
-  const y_tile = Math.floor(event.offsetY / tilesizeheight);
+  // Get mouse position relative to canvas
+  const mouseX = event.offsetX;
+  const mouseY = event.offsetY;
+
+  // Check if clicking on a placed tower
+  const tower = towers.find((t) => {
+    const yOffset = t.placeId === 2 ? -30 : 0;
+    const width = t.placeId === 2 ? 140 : 128;
+    const height = t.placeId === 2 ? 140 : 128;
+    const towerX = t.x * tilesizewidth;
+    const towerY = t.y * tilesizeheight + yOffset;
+    return (
+      mouseX >= towerX &&
+      mouseX <= towerX + width &&
+      mouseY >= towerY &&
+      mouseY <= towerY + height
+    );
+  });
+
+  if (tower) {
+    // If clicking on a different tower, show menu for it
+    if (selectedPlacedTower !== tower) {
+      selectedPlacedTower = tower;
+      showTowerMenu(tower);
+    }
+    // If clicking the same tower, do nothing (menu stays)
+    return;
+  } else {
+    // Not clicking a tower: hide menu
+    hideTowerMenu();
+  }
+
+  // --- Tower placement logic ---
+  const x_tile = Math.floor(mouseX / tilesizewidth);
+  const y_tile = Math.floor(mouseY / tilesizeheight);
 
   const offsets = [
     [0, 0], // bottom-right
@@ -335,6 +420,18 @@ document.onclick = (event) => {
     }
   }
 };
+
+// Hide menu if clicking anywhere else in the document (outside canvas)
+document.body.addEventListener("mousedown", function (e) {
+  // If menu is open and click is outside menu, hide it
+  if (
+    towerMenu &&
+    towerMenu.style.display !== "none" &&
+    !towerMenu.contains(e.target)
+  ) {
+    hideTowerMenu();
+  }
+});
 
 mappng.onload = function () {
   drawBackground();
