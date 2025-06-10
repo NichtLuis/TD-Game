@@ -10,10 +10,12 @@
 
 <body>
   <div class="container">
-    <div style="position: relative; width: 1280px; height: 768px;">
+    <div style="position: relative; width: 1280px; height: 768px">
       <canvas id="backgroundCanvas" width="1280" height="768" style="position: absolute; z-index: 1"></canvas>
       <canvas id="towerCanvas" width="1280" height="768"
         style="position: absolute; z-index: 2; background-color: transparent"></canvas>
+         <canvas id="enemyCanvas" width="1280" height="768"
+        style="position: absolute; z-index: 3; background-color: transparent" ></canvas>
     </div>
     <div class="tower-selection">
       <div class="tower" id="tower1" data-tower-type="normal">
@@ -27,7 +29,9 @@
       </div>
 
       <div class="tower" id="tower2" data-tower-type="cannon">
-        <img src="./images/towerAnim/cannon/turm_45_vorne-removebg-preview.png" alt="Tower 1" />
+        <div
+          style="width: 128px; height: 128px; background: #87cefa; border-radius: 8px; border: 2px solid #3399ff; display: flex; align-items: center; justify-content: center;">
+        </div>
         <p>Tower 2</p>
         <ul class="tower-stats">
           <li>Cost: 15</li>
@@ -51,20 +55,9 @@
     <script src="./src/Tutorial.js" type="module"></script>
     <!-- hidden music, make sure to align correctly later -->
     <audio id="backgroundMusic" autoplay loop controls style="visibility: collapse;">
-      <source src="./sounds/background_music/Ingame_Musik_final.wav" type="audio/wav">
+      <source src="./sounds/background_music/Ingame_Musik_1.wav" type="audio/wav">
       Browser unterstützt keine Audiodateien.
     </audio>
-  </div>
-
-  <div id="tower-menu" style="display:none; position:absolute;">
-    <button id="upgrade-btn">
-      <img src="images/ui/upgrade_button.png" alt="Upgrade" style="width:32px;height:32px;">
-    </button>
-    <button id="sell-btn">
-      <img src="images/ui/delete_button.png" alt="Sell" style="width:32px;height:32px;">
-    </button>
-  </div>
-
 </body>
 
 </html>
