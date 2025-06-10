@@ -516,7 +516,8 @@ function gameLoop(timestamp = performance.now()) {
     // Starts next wave 
     if (!waveInProgress && waveDelayCounter > 0) {
         waveDelayCounter -= deltaTime;
-        if (waveDelayCounter === 0 && currentWave < waveData.length) {
+        if (waveDelayCounter <= 0 && currentWave < waveData.length) {
+            waveDelayCounter = 0;
             startWave();
         }
     }
