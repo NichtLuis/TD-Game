@@ -93,6 +93,10 @@ class tower_cannon extends tower {
 class tower_smg extends tower {
   constructor(x, y) {
     super(x, y, 20, 5, 500, 50, false);
+    this.placeId = 4; // Unique ID for this tower type
+    this.image = new Image();
+    this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
+    this.image.src = "images/towerAnim/smg/tower2.png";
   }
 
   canShoot(target) {
