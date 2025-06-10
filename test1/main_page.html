@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TD Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container" style="position: relative; width: 1280px; height: 780px;">
+        <canvas id="canvas" width="1280" height="768" style="background: #fff; border: 1px solid #ccc; position: absolute; top: 0; left: 0;"></canvas>
+        <div id="main-menu">
+            <img src="./assets/ui/startMenu.png" id="main-menu-img" width="1280" height="780" alt="Main Menu" />
+            <button id="start-btn" class="menu-btn" style="top: 110px;">Start</button>
+            <button id="options-btn" class="menu-btn" style="top: 330px;">Options</button>
+            <button id="exit-btn" class="menu-btn" style="top: 550px;">Exit</button>
+        </div>
+        <div id="game-over">
+            <h1 style="color:white; font-size:3em;">You Lost!</h1>
+            <button id="retry-btn" style="font-size:1.5em; margin:20px;">Retry</button>
+            <button id="back-menu-btn" style="font-size:1.5em;">Back to Menu</button>
+        </div>
+        <div id="game-win" style="display:none; position:absolute; top:0; left:0; width:1280px; height:780px; background:rgba(0,0,0,0.8); z-index:100; justify-content:center; align-items:center; flex-direction:column;">
+            <h1 style="color:white; font-size:3em;">You Win!</h1>
+            <button id="win-retry-btn" style="font-size:1.5em; margin:20px;">Retry</button>
+            <button id="win-menu-btn" style="font-size:1.5em;">Back to Menu</button>
+        </div>
+    </div>
+    <div id="sidebar"> 
+        <div class="tower-option" data-type="tesla"> 
+            <img src="./assets/turret/teslaTower.png" width="192" height="192"><br>
+            Tesla Tower (10$): Shoots lightning and does mid damage
+        </div>
+            <div class="tower-option" data-type="cannon">
+                <img src="./assets/turret/cannonTower.png" width="192" height="192"><br>
+                Cannon (20$): Shoots cannonballs and does high damage
+        </div>
+            <div class="tower-option" data-type="antiAir">
+                <img src="none" width="192" height="192"><br>
+                Anti-Air Tower (25$): Shoots missiles and does damage to flying enemies
+        </div>
+    </div>
+    <script src="./src/index.js" type="module"></script>
+</body>
+</html>
