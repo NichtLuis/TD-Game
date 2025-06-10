@@ -66,8 +66,25 @@
           </ul>
         </div>
       </div>
+      <div
+        id="money-display"
+        style="font-size: 28px; color: #ffe066; font-weight: bold; margin: 20px"
+      >
+        💰 <span id="money-amount">100</span>
+      </div>
     </div>
     <script src="./src/Tutorial.js" type="module"></script>
+    <script>
+      // Money UI update logic
+      import("./src/Tutorial.js").then((module) => {
+        setInterval(() => {
+          if (window.playerMoney !== undefined) {
+            document.getElementById("money-amount").textContent =
+              window.playerMoney;
+          }
+        }, 100);
+      });
+    </script>
     <!-- hidden music, make sure to align correctly later -->
     <audio
       id="backgroundMusic"

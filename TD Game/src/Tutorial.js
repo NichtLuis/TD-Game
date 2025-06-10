@@ -95,9 +95,23 @@ function highlightTower(tower) {
 
   towerCtx.save();
   towerCtx.globalAlpha = 1;
-  towerCtx.shadowColor =
-    tower.placeId === 2 ? "rgba(133, 111, 50, 1)" : "rgba(138, 80, 15, 1)";
-  towerCtx.shadowBlur = 25;
+  // Glow color based on tower level
+  let glowColor = "gray";
+  if (tower.placeId === 2) {
+    glowColor = tower.getGlowColor();
+  } else if (tower.placeId === 3) {
+    glowColor = tower.getGlowColor();
+  } else if (tower.placeId === 4) {
+    glowColor = tower.getGlowColor();
+  }
+  let colorMap = {
+    gray: "rgba(180,180,180,1)",
+    blue: "rgba(0,120,255,1)",
+    purple: "rgba(180,0,255,1)",
+    gold: "rgba(255,215,0,1)",
+  };
+  towerCtx.shadowColor = colorMap[glowColor] || "rgba(180,180,180,1)";
+  towerCtx.shadowBlur = 30;
   towerCtx.shadowOffsetX = 0;
   towerCtx.shadowOffsetY = 0;
 
@@ -248,6 +262,8 @@ let selectedPlacedTower = null;
 let towerMenu = null;
 let upgradeBtn = null;
 let sellBtn = null;
+let playerMoney = 100;
+window.playerMoney = playerMoney;
 
 function showTowerMenu(tower) {
   // Use existing menu and buttons from the DOM
@@ -258,7 +274,27 @@ function showTowerMenu(tower) {
     if (upgradeBtn) {
       upgradeBtn.onclick = (e) => {
         e.stopPropagation();
-        // ...upgrade logic here...
+        if (selectedPlacedTower && selectedPlacedTower.canUpgrade()) {
+          const cost = selectedPlacedTower.getUpgradeCost();
+          if (playerMoney >= cost) {
+            setPlayerMoney(playerMoney - cost);
+            selectedPlacedTower.levelUp();
+            floatingTexts.push({
+              text: `- ${cost} 💰`,
+              x: (selectedPlacedTower.x + 1) * tilesizewidth,
+              y: (selectedPlacedTower.y + 1) * tilesizeheight - 40,
+              alpha: 1,
+            });
+            drawTowers();
+          } else {
+            floatingTexts.push({
+              text: `Not enough 💰`,
+              x: (selectedPlacedTower.x + 1) * tilesizewidth,
+              y: (selectedPlacedTower.y + 1) * tilesizeheight - 40,
+              alpha: 1,
+            });
+          }
+        }
         hideTowerMenu();
       };
     }
@@ -286,6 +322,8 @@ function showTowerMenu(tower) {
             y: (y + 1) * tilesizeheight - 20,
             alpha: 1,
           });
+
+          setPlayerMoney(playerMoney + sellValue);
 
           drawTowers();
         }
