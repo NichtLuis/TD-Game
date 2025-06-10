@@ -441,3 +441,8 @@ mappng.onload = function () {
 };
 
 var enemy1 = new enemy_normal(2 * tilesizeheight, 2 * tilesizewidth);
+var enemy2 = new enemy_speedey(2 * tilesizeheight, 2 * tilesizewidth);
+
+
+//DON'T TOUCH THE INTERVAL
+let enemyanimation = setInterval(drawEnemy,123);
