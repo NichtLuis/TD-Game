@@ -43,10 +43,10 @@ class tower {
     }
   }
 }
-
+// Reichweiten Final von Spiel Design festgelegt
 class tower_normal extends tower {
   constructor(x, y) {
-    super(x, y, 20, 10, 180, false);
+    super(x, y, 2, 2, 300, true);
     this.placeId = 2; // Unique ID for this tower type
     this.image = new Image();
     this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
@@ -69,7 +69,7 @@ class tower_normal extends tower {
 
 class tower_cannon extends tower {
   constructor(x, y) {
-    super(x, y, 50, 2, 220, false);
+    super(x, y, 4, 0.5, 220, false);
     this.placeId = 3; // Unique ID for this tower type
     this.image = new Image();
     this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
@@ -92,7 +92,11 @@ class tower_cannon extends tower {
 
 class tower_smg extends tower {
   constructor(x, y) {
-    super(x, y, 20, 5, 500, 50, false);
+    super(x, y, 1, 4, 400, 50, true);
+    this.placeId = 4; // Unique ID for this tower type
+    this.image = new Image();
+    this.imageR = new Image(); // imageR = rotating image --> for example a guy that rotates his gun
+    this.image.src = "images/towerAnim/smg/tower2.png";
   }
 
   canShoot(target) {

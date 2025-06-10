@@ -39,6 +39,25 @@
             <li>Fire Rate: 2/s</li>
           </ul>
         </div>
+<body>
+  <div class="container">
+    <div style="position: relative; width: 1280px; height: 768px">
+      <canvas id="backgroundCanvas" width="1280" height="768" style="position: absolute; z-index: 1"></canvas>
+      <canvas id="towerCanvas" width="1280" height="768"
+        style="position: absolute; z-index: 2; background-color: transparent"></canvas>
+         <canvas id="enemyCanvas" width="1280" height="768"
+        style="position: absolute; z-index: 3; background-color: transparent" ></canvas>
+    </div>
+    <div class="tower-selection">
+      <div class="tower" id="tower1" data-tower-type="normal">
+        <img src="./images/towerAnim/tesla/turm1.5.png" alt="Tower 1" />
+        <ul class="tower-stats">
+          <li>Cost: 10</li>
+          <li>Damage: 2</li>
+          <li>Fire Rate: 2/s</li>
+          <li>Range: 300px</li>
+        </ul>
+      </div>
 
         <div class="tower" id="tower2" data-tower-type="cannon">
           <img
@@ -53,6 +72,15 @@
             <li>Fire Rate: 0.66/s</li>
           </ul>
         </div>
+      <div class="tower" id="tower2" data-tower-type="cannon">
+        <img src="./images/towerAnim/cannon/turm_vorne-removebg-preview.png"  alt="Tower 2" stlye=" display flex; align-items: center; justify-content: center;"/>
+        <ul class="tower-stats">
+          <li>Cost: 15</li>
+          <li>Damage: 4</li>
+          <li>Fire Rate: 0,5/s</li>
+          <li>Range: 220px</li>
+        </ul>
+      </div>
 
         <div class="tower" id="tower3" data-tower-type="smg">
           <div
@@ -77,19 +105,20 @@
       </div>
     </div>
 
+      <div class="tower" id="tower3" data-tower-type="smg">
+        <img src="./images/towerAnim/smg/tower2.png"  alt="Tesla" stlye=" display flex; align-items: center; justify-content: center;"/>
+        <ul class="tower-stats">
+          <li>Cost: 15</li>
+          <li>Damage: 1</li>
+          <li>Fire Rate: 4/s</li>
+          <li>Range: 400px</li>
+        </ul>
+      </div>
+    </div>
     <script src="./src/Tutorial.js" type="module"></script>
     <!-- hidden music, make sure to align correctly later -->
-    <audio
-      id="backgroundMusic"
-      autoplay
-      loop
-      controls
-      style="visibility: collapse"
-    >
-      <source
-        src="./sounds/background_music/Ingame_Musik_1.wav"
-        type="audio/wav"
-      />
+    <audio id="backgroundMusic" autoplay loop controls style="visibility: collapse;">
+      <source src="./sounds/background_music/Ingame_Musik_final.wav" type="audio/wav">
       Browser unterstützt keine Audiodateien.
     </audio>
 
