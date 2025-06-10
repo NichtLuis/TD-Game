@@ -15,7 +15,7 @@ var tilesizewidth = 64;
 var mappng = new Image(); //new picture
 mappng.src = "images/maps/map.desinge.final.png"; //getting the map.png
 //enemy
-var frames= 0;
+var frames = 0;
 var enemyn = new Image();
 enemyn.src = "images/GegnerAnim/BigGuyWalkAnimation.png";
 
@@ -81,13 +81,35 @@ var enemyLayer = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-function createTower() {}
-
 function tryPlaceTower(tower) {
   towerLayer[tower.y][tower.x] = tower.placeId;
   towerLayer[tower.y][tower.x + 1] = 0;
   towerLayer[tower.y + 1][tower.x] = 0;
   towerLayer[tower.y + 1][tower.x + 1] = 0;
+}
+
+function highlightTower(tower) {
+  const yOffset = tower.placeId === 2 ? -30 : 0;
+  const width = tower.placeId === 2 ? 140 : 128;
+  const height = tower.placeId === 2 ? 140 : 128;
+
+  towerCtx.save();
+  towerCtx.globalAlpha = 1;
+  towerCtx.shadowColor =
+    tower.placeId === 2 ? "rgba(133, 111, 50, 1)" : "rgba(138, 80, 15, 1)";
+  towerCtx.shadowBlur = 25;
+  towerCtx.shadowOffsetX = 0;
+  towerCtx.shadowOffsetY = 0;
+
+  towerCtx.drawImage(
+    tower.image,
+    tower.x * tilesizewidth,
+    tower.y * tilesizeheight + yOffset,
+    width,
+    height
+  );
+
+  towerCtx.restore();
 }
 
 function drawTowers() {
@@ -119,6 +141,11 @@ function drawTowers() {
       }
     }
   }
+  // Highlight selectedPlacedTower if menu is open
+  if (selectedPlacedTower) {
+    highlightTower(selectedPlacedTower);
+  }
+  drawFloatingTexts();
 }
 function drawEnemy() {
   enemyCtx.clearRect(0, 0, 1280, 768); //Hintergrund löschen
@@ -126,21 +153,21 @@ function drawEnemy() {
     enemyCtx.drawImage(
       enemyn,
       //position picture
-      (0+frames) * tilesizewidth,
+      (0 + frames) * tilesizewidth,
       0 * tilesizeheight,
       //size picture
       2 * tilesizewidth,
       2 * tilesizeheight,
       //position map
       0 * tilesizewidth,
-      6* tilesizeheight,
+      6 * tilesizeheight,
       //size map
       2 * tilesizewidth,
       2 * tilesizeheight
     );
   }
-  frames=frames+2;
-  frames=frames%22;
+  frames = frames + 2;
+  frames = frames % 22;
 }
 
 function drawBackground() {
@@ -185,6 +212,37 @@ function zeichne() {
   }
 }
 
+// array to keep track of floating texts
+let floatingTexts = [];
+
+function drawFloatingTexts() {
+  for (let i = floatingTexts.length - 1; i >= 0; i--) {
+    const text = floatingTexts[i];
+    // Animation: move up and fade out
+    text.y -= 1;
+    text.alpha -= 0.02;
+    towerCtx.save();
+    towerCtx.globalAlpha = Math.max(0, text.alpha);
+    towerCtx.font = "28px Arial";
+    towerCtx.fillStyle = "#ffe066";
+    towerCtx.strokeStyle = "#bfa100";
+    towerCtx.lineWidth = 2;
+    towerCtx.textAlign = "center";
+    towerCtx.strokeText(text.text, text.x, text.y);
+    towerCtx.fillText(text.text, text.x, text.y);
+    towerCtx.restore();
+    if (text.alpha <= 0) {
+      floatingTexts.splice(i, 1);
+    }
+  }
+}
+
+const TOWER_PRICES = {
+  2: 10, // normal
+  3: 15, // cannon
+  4: 15, // smg
+};
+
 // --- Tower selection menu logic ---
 let selectedPlacedTower = null;
 let towerMenu = null;
@@ -207,7 +265,30 @@ function showTowerMenu(tower) {
     if (sellBtn) {
       sellBtn.onclick = (e) => {
         e.stopPropagation();
-        // ...sell logic here...
+        if (selectedPlacedTower) {
+          const index = towers.indexOf(selectedPlacedTower);
+          if (index !== -1) {
+            towers.splice(index, 1);
+          }
+          const x = selectedPlacedTower.x;
+          const y = selectedPlacedTower.y;
+          towerLayer[y][x] = 1;
+          towerLayer[y][x + 1] = 1;
+          towerLayer[y + 1][x] = 1;
+          towerLayer[y + 1][x + 1] = 1;
+
+          const price = TOWER_PRICES[selectedPlacedTower.placeId || 10];
+          const sellValue = Math.round(price * 0.7);
+
+          floatingTexts.push({
+            text: `+${sellValue} 💰`,
+            x: (x + 1) * tilesizewidth,
+            y: (y + 1) * tilesizeheight - 20,
+            alpha: 1,
+          });
+
+          drawTowers();
+        }
         hideTowerMenu();
       };
     }
@@ -237,6 +318,14 @@ function hideTowerMenu() {
   selectedPlacedTower = null;
 }
 
+function animateFloatingTexts() {
+  if (floatingTexts.length > 0) {
+    drawTowers();
+  }
+  requestAnimationFrame(animateFloatingTexts);
+}
+animateFloatingTexts();
+
 // hover effect
 document.onmousemove = (event) => {
   drawTowers(); // Redraw towers
@@ -263,29 +352,7 @@ document.onmousemove = (event) => {
 
   if (tower) {
     // Highlight the existing tower with a shadow effect
-    const yOffset = tower.placeId === 2 ? -30 : 0;
-    const width = tower.placeId === 2 ? 140 : 128;
-    const height = tower.placeId === 2 ? 140 : 128;
-
-    // Save current context state
-    towerCtx.save();
-    towerCtx.globalAlpha = 1;
-    towerCtx.shadowColor =
-      tower.placeId === 2 ? "rgba(133, 111, 50, 1)" : "rgba(138, 80, 15, 1)"; // gold/yellow shadow
-    towerCtx.shadowBlur = 25;
-    towerCtx.shadowOffsetX = 0;
-    towerCtx.shadowOffsetY = 0;
-
-    towerCtx.drawImage(
-      tower.image,
-      tower.x * tilesizewidth,
-      tower.y * tilesizeheight + yOffset,
-      width,
-      height
-    );
-
-    // Restore context state
-    towerCtx.restore();
+    highlightTower(tower);
     return; // Skip further hover logic
   }
 
@@ -484,6 +551,5 @@ mappng.onload = function () {
 var enemy1 = new enemy_normal(2 * tilesizeheight, 2 * tilesizewidth);
 var enemy2 = new enemy_speedey(2 * tilesizeheight, 2 * tilesizewidth);
 
-
 //DON'T TOUCH THE INTERVAL
-let enemyanimation = setInterval(drawEnemy,123);
+let enemyanimation = setInterval(drawEnemy, 123);
