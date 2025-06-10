@@ -21,6 +21,12 @@ canvas {
   justify-content: space-between;
 }
 
+.tower-stats{
+  margin: 0px;
+  padding-left: 20%;
+}
+
+
 .tower:hover {
   cursor: pointer;
   transform: scale(1.1);
