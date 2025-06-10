@@ -3,19 +3,24 @@ import { tower_normal, tower_cannon, tower_smg } from "./tower.js";
 // Get references to the canvases and their contexts
 var backgroundCanvas = document.getElementById("backgroundCanvas");
 var towerCanvas = document.getElementById("towerCanvas");
+var enemyCanvas = document.getElementById("enemyCanvas");
 
 var backgroundCtx = backgroundCanvas.getContext("2d");
 var towerCtx = towerCanvas.getContext("2d");
+var enemyCtx = enemyCanvas.getContext("2d");
 
 var tilesizeheight = 64;
 var tilesizewidth = 64;
 
 var mappng = new Image(); //new picture
 mappng.src = "images/maps/map.desinge.final.png"; //getting the map.png
+//enemy
+var frames= 0;
 var enemyn = new Image();
-enemyn.src = "images/GegenerAnim/BigGuyWalkAnimatin.png";
+enemyn.src = "images/GegnerAnim/BigGuyWalkAnimation.png";
 
 // import { enemy_normal } from "./enemy.js";
+import { enemy_normal } from "./enemy.js";
 import { enemy_speedey } from "./enemy.js";
 import { enemy_flying } from "./enemy.js";
 import { enemy_tank } from "./enemy.js";
@@ -61,6 +66,20 @@ var towerLayer = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
+var enemyLayer = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
 
 function createTower() {}
 
@@ -100,6 +119,28 @@ function drawTowers() {
       }
     }
   }
+}
+function drawEnemy() {
+  enemyCtx.clearRect(0, 0, 1280, 768); //Hintergrund löschen
+  if (enemy1 == enemy1) {
+    enemyCtx.drawImage(
+      enemyn,
+      //position picture
+      (0+frames) * tilesizewidth,
+      0 * tilesizeheight,
+      //size picture
+      2 * tilesizewidth,
+      2 * tilesizeheight,
+      //position map
+      0 * tilesizewidth,
+      6* tilesizeheight,
+      //size map
+      2 * tilesizewidth,
+      2 * tilesizeheight
+    );
+  }
+  frames=frames+2;
+  frames=frames%22;
 }
 
 function drawBackground() {
