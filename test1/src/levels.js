@@ -1,0 +1,78 @@
+export const levels = [
+  {
+    name: "Level 1",
+    mapImage: "assets/map/first_map.png",
+    waypoints: [
+      { x: -50, y: -50 },
+      { x: -200, y: 470 },
+      { x: 547, y: 466 },
+      { x: 547, y: 325 },
+      { x: 1442, y: 319 }
+    ],
+    towerLayer: [ 
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+    waveData: [ 
+        [{ type: "normal", count: 10, interval: 175 }], // Wave 1 and so on
+        [{ type: "flying", count: 10, interval: 225 }],
+        [{ type: "normal", count: 15, interval: 160 }],
+        [{ type: "flying", count: 15, interval: 200 }],
+        [{ type: "normal", count: 10, interval: 160 }, { type: "flying", count: 10, interval: 200 }],
+        [{ type: "normal", count: 30, interval: 140 }],
+        [{ type: "flying", count: 25, interval: 180 }],
+        [{ type: "normal", count: 20, interval: 140 }, { type: "flying", count: 20, interval: 180 }],
+        [{ type: "normal", count: 20, interval: 140 }, { type: "flying", count: 25, interval: 180 }],
+        [{ type: "boss", count: 1, interval: 60 }]
+    ],
+  },
+  {
+    name: "Level 2",
+    mapImage: "assets/map/second_map.png",
+    waypoints: [
+        { x: -50, y: -50 },
+        { x: -113, y: 353 },
+        { x: 500, y: 353 },
+        { x: 500, y: 187 },
+        { x: 934, y: 185 },
+        { x: 934, y: 533 },
+        { x: 1469, y: 535 }
+    ],
+    towerLayer: [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0]
+    ],
+    waveData: [
+        [{ type: "normal", count: 15, interval: 175 }], // Wave 1 and so on
+        [{ type: "flying", count: 10, interval: 225 }],
+        [{ type: "normal", count: 15, interval: 160 }],
+        [{ type: "flying", count: 15, interval: 200 }],
+        [{ type: "normal", count: 10, interval: 160 }, { type: "flying", count: 10, interval: 200 }],
+        [{ type: "normal", count: 30, interval: 140 }],
+        [{ type: "flying", count: 25, interval: 180 }],
+        [{ type: "normal", count: 20, interval: 140 }, { type: "flying", count: 20, interval: 180 }],
+        [{ type: "normal", count: 20, interval: 140 }, { type: "flying", count: 25, interval: 180 }],
+        [{ type: "boss", count: 1, interval: 60 }]
+    ]
+  }
+];

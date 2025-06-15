@@ -1,15 +1,48 @@
+function isInsideCanvas(x, y) {
+    return x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height;
+}
+
+const cannonImages = {
+    0: new Image(),
+    45: new Image(),
+    90: new Image(),    
+    135: new Image(),
+    180: new Image(),
+    225: new Image(),
+    270: new Image(),
+    315: new Image()
+};
+
+cannonImages[0].src = './assets/turret/cannon/0.png';
+cannonImages[45].src = './assets/turret/cannon/45.png';
+cannonImages[90].src = './assets/turret/cannon/90.png';  
+cannonImages[135].src = './assets/turret/cannon/135.png';
+cannonImages[180].src = './assets/turret/cannon/180.png';
+cannonImages[225].src = './assets/turret/cannon/225.png';
+cannonImages[270].src = './assets/turret/cannon/270.png';
+cannonImages[315].src = './assets/turret/cannon/315.png';
+
+function getClosestCannonImage(angle) {
+  const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+  angle = ((angle % 360) + 360) % 360;
+  let closest = angles.reduce((prev, curr) =>
+    Math.abs(curr - angle) < Math.abs(prev - angle) ? curr : prev
+  );
+  return cannonImages[closest];
+}
+
 export class Tower {
     static images = {
         tesla: (() => {
             const img = new Image();
-            img.src = "../../assets/turret/teslaTower.png";
+            img.src = "./assets/turret/teslaTower.png";
             return img;
         })(),
-        cannon: (() => {
-            const img = new Image();
-            img.src = "../../assets/turret/cannonTower.png";
-            return img;
-        })(),
+        // cannon: (() => {
+        //    const img = new Image();
+        //    img.src = "./assets/turret/cannonTower.png";
+        //    return img;
+        //})(),
     };
     constructor(x, y, type) {
         this.x = x;
@@ -19,8 +52,8 @@ export class Tower {
         this.level = 1;
 
         if (type == "tesla") {
-            this.damage = 5;
-            this.fireRate = 10; 
+            this.damage = 25;
+            this.fireRate = 35; 
             this.range = 200;
         } else if (type == "cannon") {
             this.damage = 100;
@@ -39,39 +72,86 @@ export class Tower {
     canShoot() {
         return this.cooldown <= 0;
     }
-    shoot(enemy) {
-        // Anti-air only shoots flying, others only shoot ground
-        if (this.cooldown > 0) return null;
-        if (this.type === "antiAir" && !enemy.isFlying) return null;
-        if (this.type !== "antiAir" && enemy.isFlying) return null;
+    shoot(enemies) {
+        if (
+            !this.target ||
+            this.target.health <= 0 ||
+            !isInsideCanvas(this.target.x, this.target.y) ||
+            Math.hypot(this.target.x - this.x, this.target.y - this.y) > this.range
+        ) {
+            let closest = null;
+            let minDist = Infinity;
+            for (let enemy of enemies) {
+                if (this.type === "antiAir" && !enemy.isFlying) continue;
+                if (this.type !== "antiAir" && enemy.isFlying) continue;
+                if (!isInsideCanvas(enemy.x, enemy.y)) continue;
+                const dx = enemy.x - this.x;
+                const dy = enemy.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist <= this.range && dist < minDist) {
+                    minDist = dist;
+                    closest = enemy;
+                }
+            }
+            this.target = closest;
+        }
 
-        const dx = enemy.x - this.x;
-        const dy = enemy.y - this.y;
+        if (!this.target) return null;
+
+        const dx = this.target.x - this.x;
+        const dy = this.target.y - this.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < this.range) {
+        if (dist > this.range) {
+            this.target = null;
+            return null;
+        }
+
+        if (this.cooldown > 0) return null;
+
+        if (this.type === "tesla") {
+            this.cooldown = this.fireRate || 40;
+            return { x: this.x, y: this.y, damage: this.damage, target: this.target };
+        } else {
             const speed = 5;
             const vx = (dx / dist) * speed;
             const vy = (dy / dist) * speed;
-            this.cooldown = this.fireRate;
+            this.cooldown = this.fireRate || 10;
             return { x: this.x, y: this.y, vx, vy, damage: this.damage };
         }
-        return null;
     }
 
-    update() {
-        if (this.cooldown > 0) this.cooldown--;
+    update(deltaTime) {
+        if (this.cooldown > 0) this.cooldown -= deltaTime;
+
+        if (this.type === "cannon" && this.target) {
+            const dx = this.target.x - this.x;
+            const dy = this.target.y - this.y;
+            this.angle = (Math.atan2(this.target.y - this.y, this.target.x - this.x) * 180 / Math.PI + 90 + 360) % 360;
+        }
     }
     draw(ctx) {
-    const img = Tower.images[this.type];
     const size = 128;
     let offsetY = 0;
+
     if (this.type === "tesla") {
         offsetY = -32; 
     }
+    else if (this.type === "cannon") {
+        offsetY = -32; 
+    } else if (this.type === "antiAir") {
+        offsetY = -16; 
+    }
+
+    let img;
+    if (this.type === "cannon") {
+        img = getClosestCannonImage(this.angle); 
+    } else {
+        img = Tower.images[this.type];
+    }
+
     if (img && img.complete && img.naturalWidth !== 0) {
         ctx.drawImage(img, this.x - size / 2, this.y - size / 2 + offsetY, size, size);
     } else {
-        // If no image, then draw a colored circle
         if (this.type === "tesla") ctx.fillStyle = 'cyan';
         else if (this.type === "cannon") ctx.fillStyle = 'gray';
         else if (this.type === "antiAir") ctx.fillStyle = 'orange';
@@ -80,5 +160,7 @@ export class Tower {
         ctx.arc(this.x, this.y + offsetY, size / 2, 0, Math.PI * 2);
         ctx.fill();
     }
+ }
 }
-}
+
+export { getClosestCannonImage };

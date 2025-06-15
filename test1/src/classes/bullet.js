@@ -1,7 +1,7 @@
 const bulletImages = {
     antiAir: new Image()
 };
-bulletImages.antiAir.src = '../../assets/bullet/antiAirBullet.png';
+bulletImages.antiAir.src = './assets/bullet/antiAirBullet.png';
 
 export class Bullet {
     constructor(x, y, vx, vy, damage, type) {
@@ -13,15 +13,16 @@ export class Bullet {
         this.type = type;
         if (type === "cannon") {
             this.radius = 14;
-
+            this.speed = 2;
         } else if (type === "antiAir") {
             this.image = bulletImages.antiAir;
             this.radius = 32; 
+            this.speed = 3;
         }
     }
     update(deltaTime) {
-        this.x += this.vx * deltaTime;
-        this.y += this.vy * deltaTime;
+        this.x += (this.vx * this.speed) * deltaTime;
+        this.y += (this.vy * this.speed) * deltaTime;
     }
     draw(ctx) {
     const img = bulletImages[this.type];

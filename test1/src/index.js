@@ -1,14 +1,72 @@
 import { Bullet } from "./classes/bullet.js";
 import { Tower } from "./classes/tower.js";
 import { Enemy } from "./classes/enemy.js";
-import { waypoints } from "./waypoints.js";
 import { Laser } from "./classes/laser.js";
+import { levels } from "./levels.js";
+import { getClosestCannonImage } from "./classes/tower.js";
+import { audio , music , playSound, stopAllAudio} from "./audio.js";
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const firstMap = new Image();
-firstMap.src = './assets/map/first_map.png';
+function enableMenuMusicOnce() {
+    music.mainMenu_1.currentTime = 0;
+    music.mainMenu_1.play();
+    document.body.removeEventListener('click', enableMenuMusicOnce);
+    document.body.removeEventListener('keydown', enableMenuMusicOnce);
+}
+
+// Attach listeners as soon as the page loads
+document.body.addEventListener('click', enableMenuMusicOnce);
+document.body.addEventListener('keydown', enableMenuMusicOnce);
+
+document.getElementById('level1-btn').onclick = () => {
+  currentLevelIndex = 0;
+  currentLevel = levels[currentLevelIndex];
+  document.getElementById('level-select').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'block';
+  document.getElementById('main-menu').style.display = 'none';
+  stopAllAudio();
+  music.bgm_1.play();
+  music.bgm_1.loop = true;
+  loadLevel();
+  gameLoop(); 
+};
+
+document.getElementById('level2-btn').onclick = () => {
+  currentLevelIndex = 1;
+  currentLevel = levels[currentLevelIndex];
+  document.getElementById('level-select').style.display = 'none';
+  document.getElementById('sidebar').style.display = 'block';
+  document.getElementById('main-menu').style.display = 'none';
+  stopAllAudio();
+  music.bgm_2.play();
+  music.bgm_2.loop = true;
+  loadLevel();
+  gameLoop(); 
+};
+
+let waveData = [];
+let waypoints = [];
+let towerLayer = [];
+let currentLevelIndex = 0;
+let currentLevel = levels[currentLevelIndex];
+let mapImage = new Image();
+
+function loadLevel() {
+  mapImage.src = currentLevel.mapImage;
+  towerLayer = JSON.parse(JSON.stringify(currentLevel.towerLayer));
+  waveData = JSON.parse(JSON.stringify(currentLevel.waveData));
+  waypoints = JSON.parse(JSON.stringify(currentLevel.waypoints));
+  // Reset wave-related state
+  currentWave = 0;
+  enemiesToSpawn = [];
+  waveInProgress = false;
+  waveTimer = 0;
+  waveDelayCounter = 0;
+  // Reset other state as needed
+  resetGameState();
+}
 
 const lightningImg = new Image(); // test
 lightningImg.src = './assets/bullet/teslaBullet.png';
@@ -26,19 +84,6 @@ let waveTimer = 0;
 let waveDelay = 120; // Delay between waves 
 let waveDelayCounter = 0;
 
-const waveData = [ 
-    [{ type: "normal", count: 10, interval: 175 }], // Wave 1 and so on
-    [{ type: "flying", count: 10, interval: 225 }],
-    [{ type: "normal", count: 15, interval: 160 }],
-    [{ type: "flying", count: 15, interval: 200 }],
-    [{ type: "normal", count: 10, interval: 160 }, { type: "flying", count: 10, interval: 200 }],
-    [{ type: "normal", count: 30, interval: 140 }],
-    [{ type: "flying", count: 25, interval: 180 }],
-    [{ type: "normal", count: 20, interval: 140 }, { type: "flying", count: 20, interval: 180 }],
-    [{ type: "normal", count: 20, interval: 140 }, { type: "flying", count: 25, interval: 180 }],
-    [{ type: "boss", count: 1, interval: 60 }]
-];
-
 function startWave() {
     if (currentWave >= waveData.length) return;
     waveInProgress = true;
@@ -55,11 +100,7 @@ document.querySelectorAll('.tower-option').forEach(option => {
 
 document.getElementById('start-btn').onclick = () => {
     document.getElementById('main-menu').style.display = 'none';
-    document.getElementById('sidebar').style.display = 'flex'; 
-    gameLoop(); // Start the game after clicking Start button
-    currentWave = 0; // test
-    waveDelayCounter = 0;
-    startWave();
+    document.getElementById('level-select').style.display = 'flex';
 };
 document.getElementById('options-btn').onclick = () => {
     alert('Options coming soon!'); // No options yet
@@ -68,12 +109,14 @@ document.getElementById('exit-btn').onclick = () => {
     alert("You can't exit...") // You can't exit the game so it's useless
 };
 document.getElementById('retry-btn').onclick = () => {
-    resetGameState();
+    stopAllAudio();
+    resetGameState();  
     document.getElementById('game-over').style.display = 'none';
     gameLoop();
 };
 
 document.getElementById('back-menu-btn').onclick = () => {
+    stopAllAudio();
     document.getElementById('game-over').style.display = 'none';
     document.getElementById('main-menu').style.display = 'block';
     document.getElementById('sidebar').style.display = 'none';
@@ -82,12 +125,14 @@ document.getElementById('back-menu-btn').onclick = () => {
 };
 
 document.getElementById('win-retry-btn').onclick = () => {
+    stopAllAudio();
     resetGameState();
     document.getElementById('game-win').style.display = 'none';
     gameLoop();
 };
 
 document.getElementById('win-menu-btn').onclick = () => {
+    stopAllAudio();
     document.getElementById('game-win').style.display = 'none';
     document.getElementById('main-menu').style.display = 'block';
     document.getElementById('sidebar').style.display = 'none';
@@ -108,20 +153,7 @@ function resetGameState() {
     waveInProgress = false;
     waveTimer = 0;
     waveDelayCounter = 0;
-    towerLayer = [ 
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ];
+    towerLayer = JSON.parse(JSON.stringify(currentLevel.towerLayer));
     startWave();
 }
 
@@ -162,26 +194,45 @@ const towers = [];
 let bullets = [];
 let lasers = []; // test
 
-var towerLayer = [ // 0 = can not place, 1 = can place, 2 = occupied
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-[0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
+function isInsideCanvas(x, y) {
+    return x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height;
+}
 
-function drawTowers() {
-    towers.forEach(tower => {
-        tower.update();
+function drawTowers(deltaTime) {
+    for (let tower of towers) {
+        if (tower.type === "cannon") {
+            // Only look for a new target if:
+            // - No target
+            // - Target is dead
+            // - Target is out of range
+            // - Target is off-canvas
+            // - Cannon is ready to shoot (cooldown <= 0)
+            if (
+                !tower.target ||
+                tower.target.health <= 0 ||
+                Math.hypot(tower.target.x - tower.x, tower.target.y - tower.y) > tower.range ||
+                !isInsideCanvas(tower.target.x, tower.target.y) ||
+                tower.cooldown <= 0 // Only switch when ready to shoot
+            ) {
+                let closest = null;
+                let minDist = Infinity;
+                for (let enemy of enemies) {
+                    if (enemy.isFlying) continue;
+                    if (!isInsideCanvas(enemy.x, enemy.y)) continue;
+                    const dx = enemy.x - tower.x;
+                    const dy = enemy.y - tower.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < tower.range && dist < minDist) {
+                        minDist = dist;
+                        closest = enemy;
+                    }
+                }
+                tower.target = closest;
+            }
+        }
+        tower.update(deltaTime);
         tower.draw(ctx);
-    });
+    }
 }
 
 function drawTowerHover() {
@@ -189,8 +240,13 @@ function drawTowerHover() {
 
     // Tower preview
     const towerType = typeof selectedTowerType !== "undefined" ? selectedTowerType : "tesla";
-    const TowerImage = Tower.images[towerType];
-
+    let TowerImage;
+    if (selectedTowerType === "cannon") {
+        // Show the cannon at 0 degrees for preview
+        TowerImage = getClosestCannonImage(0);
+    } else {
+        TowerImage = Tower.images[selectedTowerType];
+    }
     // Center position for the 2x2 tower
     const centerX = hoverTile.tileX * 64 + 64;
     let centerY = hoverTile.tileY * 64 + 64;
@@ -198,6 +254,8 @@ function drawTowerHover() {
     // Apply vertical offset for tesla (image is kind of not centered) 
     let offsetY = 0;
     if (towerType === "tesla") offsetY = -32;
+    if (towerType === "cannon") offsetY = -32; 
+    if (towerType === "antiAir") offsetY = -16; 
     centerY += offsetY;
 
     // Get range for the tower type 
@@ -222,12 +280,21 @@ function drawTowerHover() {
     ctx.restore();
 
     // Draw tower image with opacity
-    if (TowerImage && TowerImage.complete) {
-        ctx.save();
-        ctx.globalAlpha = 0.5;
-        ctx.drawImage(TowerImage, centerX - 64, centerY - 64, 128, 128);
-        ctx.restore();
-    }
+    if (TowerImage && TowerImage.complete && TowerImage.naturalWidth !== 0) {
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.drawImage(TowerImage, centerX - 64, centerY - 64, 128, 128);
+    ctx.restore();
+} else {
+    // Draw a placeholder if image is missing
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 64, 0, Math.PI * 2);
+    ctx.fillStyle = 'gray';
+    ctx.fill();
+    ctx.restore();
+}
 }
 
 function drawEnemies(deltaTime) {
@@ -271,17 +338,19 @@ function drawHUD() {
 
 function shootBullets() {
     towers.forEach(tower => {
-        enemies.forEach(enemy => {
-            const shot = tower.shoot(enemy);
-            if (shot) {
-                if (tower.type === "tesla") { 
-                    lasers.push(new Laser(tower.x, tower.y, enemy.x, enemy.y, shot.damage, "tesla", 5));
-                    enemy.takeDamage(shot.damage); 
-                } else {
-                    bullets.push(new Bullet(shot.x, shot.y, shot.vx, shot.vy, shot.damage, tower.type));
-                }
+        const shot = tower.shoot(enemies); 
+        if (shot) {
+            if (tower.type === "tesla") { 
+                lasers.push(new Laser(tower.x, tower.y, shot.target.x, shot.target.y, shot.damage, "tesla", 5));
+                playSound(audio.teslaShoot.src);
+                shot.target.takeDamage(shot.damage); 
+            } else if (tower.type === "cannon") {
+                bullets.push(new Bullet(shot.x, shot.y, shot.vx, shot.vy, shot.damage, tower.type));
+                playSound(audio.cannonShoot.src);
+            } else if (tower.type === "antiAir") {
+                bullets.push(new Bullet(shot.x, shot.y, shot.vx, shot.vy, shot.damage, tower.type));
             }
-        });
+        }
     });
 }
 
@@ -305,13 +374,13 @@ function handleBulletHits() {
     for (let i = enemies.length - 1; i >= 0; i--) {
         if (enemies[i].health <= 0) {
             playerMoney += enemies[i].money; 
+            playSound(audio.enemyDeath.src);
             enemies.splice(i, 1);
         }
     }
 }
 
 function canPlaceTowerAt(tileX, tileY) {
-    // tileX: column (0-19), tileY: row (0-11)
     return towerLayer[tileY] && towerLayer[tileY][tileX] === 1;
 }
 
@@ -349,6 +418,7 @@ canvas.addEventListener('click', (e) => {
             towerLayer[tileY][tileX + 1] = 1;
             towerLayer[tileY + 1][tileX] = 1;
             towerLayer[tileY + 1][tileX + 1] = 1;
+            playSound(audio.towerSell.src);
             playerMoney += getSellValue(selectedTower);
             towers.splice(idx, 1); // Remove from array
         }
@@ -363,6 +433,7 @@ canvas.addEventListener('click', (e) => {
         ) {
             const upgradeCost = getUpgradeCost(selectedTower);
             if (selectedTower.level < 3 && playerMoney >= upgradeCost) {
+            playSound(audio.towerLevelUp.src);
             playerMoney -= upgradeCost;
             selectedTower.level++;
             selectedTower.damage *= 1.25;
@@ -400,6 +471,7 @@ canvas.addEventListener('click', (e) => {
         canPlaceTowerAt(tileX + 1, tileY + 1) &&
         playerMoney >= cost
     ) {
+        playSound(audio.towerBuy.src);
         playerMoney -= cost; 
         const towerX = tileX * 64 + 64;
         const towerY = tileY * 64 + 64;
@@ -473,12 +545,13 @@ function gameLoop(timestamp = performance.now()) {
     lastTimestamp = timestamp;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(firstMap, 0, 0);
+    if (mapImage.complete && mapImage.naturalWidth !== 0) {
+        ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
+    }
 
     drawTowerHover();
-    drawHUD();
 
-    drawTowers();
+    drawTowers(deltaTime);
     drawTowerUI();
     drawEnemies(deltaTime);
     shootBullets();
@@ -486,8 +559,13 @@ function gameLoop(timestamp = performance.now()) {
     drawBullets(deltaTime);
     handleBulletHits();
 
+    drawHUD();
+
     if (playerHealth <= 0) {
         showGameOver();
+        stopAllAudio();
+        music.gameOver.currentTime = 0; 
+        music.gameOver.play();
         return; // Stops the game loop
     }
     // Wave spawning
@@ -495,7 +573,7 @@ function gameLoop(timestamp = performance.now()) {
         for (let w of enemiesToSpawn) {
             w.timer+= deltaTime;
             if (w.spawned < w.count && w.timer >= w.interval) {
-                enemies.push(new Enemy(-120, -120, w.type));
+                enemies.push(new Enemy(-120, -120, w.type, waypoints));
                 w.spawned++;
                 w.timer = 0;
             }
@@ -508,6 +586,9 @@ function gameLoop(timestamp = performance.now()) {
         currentWave++;
         if (currentWave >= waveData.length) {
             showGameWin();
+            stopAllAudio();
+            music.win.currentTime = 0;
+            music.win.play();
             return; // Stop the game loop
         }
     waveDelayCounter = waveDelay;
@@ -524,5 +605,8 @@ function gameLoop(timestamp = performance.now()) {
     requestAnimationFrame(gameLoop);
 }
 
+mapImage.onload = () => {
+    console.log("Map loaded successfully");
+}
 
 

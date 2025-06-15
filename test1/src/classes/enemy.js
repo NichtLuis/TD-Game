@@ -1,22 +1,21 @@
-import { waypoints } from "../waypoints.js";
-
 const enemySprites = {
     normal: new Image(),
     flying: new Image(),
     boss: new Image()
 };
-enemySprites.normal.src = '../../assets/enemy/normalEnemy.png';
-enemySprites.flying.src = '../../assets/enemy/flyingEnemy.png';
-enemySprites.boss.src = '../../assets/enemy/bossEnemy.png';
+enemySprites.normal.src = './assets/enemy/normalEnemy.png';
+enemySprites.flying.src = './assets/enemy/flyingEnemy.png';
+enemySprites.boss.src = './assets/enemy/bossEnemy.png';
 
 export class Enemy {
-    constructor(x, y, type) {
+    constructor(x, y, type, waypoints) {
         this.x = x;
         this.y = y;
         this.type = type;
         this.frame = 0;
         this.frameTimer = 0;
         this.frameInterval = 10;
+        this.waypoints = waypoints;
         this.waypointIndex = 0; // Start at the first waypoint
 
         if (type == "normal"){
@@ -58,9 +57,9 @@ export class Enemy {
         } 
     }
     update(deltatime) {
-        if (this.waypointIndex >= waypoints.length) return;
+        if (this.waypointIndex >= this.waypoints.length) return;
 
-        const target = waypoints[this.waypointIndex];
+        const target = this.waypoints[this.waypointIndex];
         const dx = target.x - this.x;
         const dy = target.y - this.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
