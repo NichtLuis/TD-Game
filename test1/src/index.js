@@ -3,7 +3,7 @@ import { Tower } from "./classes/tower.js";
 import { Enemy } from "./classes/enemy.js";
 import { Laser } from "./classes/laser.js";
 import { levels } from "./levels.js";
-import { getClosestCannonImage } from "./classes/tower.js";
+import { getClosestCannonImage, getClosestAntiAirImage } from "./classes/tower.js";
 import { audio, music, playSound, stopAllAudio } from "./audio.js";
 
 const canvas = document.getElementById("canvas");
@@ -273,19 +273,13 @@ function isInsideCanvas(x, y) {
 function drawTowers(deltaTime) {
   for (let tower of towers) {
     if (tower.type === "cannon") {
-      // Only look for a new target if:
-      // - No target
-      // - Target is dead
-      // - Target is out of range
-      // - Target is off-canvas
-      // - Cannon is ready to shoot (cooldown <= 0)
       if (
         !tower.target ||
         tower.target.health <= 0 ||
         Math.hypot(tower.target.x - tower.x, tower.target.y - tower.y) >
           tower.range ||
         !isInsideCanvas(tower.target.x, tower.target.y) ||
-        tower.cooldown <= 0 // Only switch when ready to shoot
+        tower.cooldown <= 0 
       ) {
         let closest = null;
         let minDist = Infinity;
@@ -316,8 +310,9 @@ function drawTowerHover() {
     typeof selectedTowerType !== "undefined" ? selectedTowerType : "tesla";
   let TowerImage;
   if (selectedTowerType === "cannon") {
-    // Show the cannon at 0 degrees for preview
     TowerImage = getClosestCannonImage(0);
+  } else if (selectedTowerType === "antiAir") {
+    TowerImage = getClosestAntiAirImage(0);
   } else {
     TowerImage = Tower.images[selectedTowerType];
   }

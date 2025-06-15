@@ -2,6 +2,26 @@ function isInsideCanvas(x, y) {
     return x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height;
 }
 
+const antiAirImages = {
+    0: new Image(),
+    45: new Image(),
+    90: new Image(),
+    135: new Image(),
+    180: new Image(),
+    225: new Image(),
+    270: new Image(),
+    315: new Image()
+};
+
+antiAirImages[0].src = './assets/turret/antiAir/0.png';
+antiAirImages[45].src = './assets/turret/antiAir/45.png';
+antiAirImages[90].src = './assets/turret/antiAir/90.png';
+antiAirImages[135].src = './assets/turret/antiAir/135.png';
+antiAirImages[180].src = './assets/turret/antiAir/180.png';
+antiAirImages[225].src = './assets/turret/antiAir/225.png';
+antiAirImages[270].src = './assets/turret/antiAir/270.png';
+antiAirImages[315].src = './assets/turret/antiAir/315.png';
+
 const cannonImages = {
     0: new Image(),
     45: new Image(),
@@ -29,6 +49,15 @@ function getClosestCannonImage(angle) {
     Math.abs(curr - angle) < Math.abs(prev - angle) ? curr : prev
   );
   return cannonImages[closest];
+}
+
+function getClosestAntiAirImage(angle) {
+  const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+  angle = ((angle % 360) + 360) % 360;
+  let closest = angles.reduce((prev, curr) =>
+    Math.abs(curr - angle) < Math.abs(prev - angle) ? curr : prev
+  );
+  return antiAirImages[closest];
 }
 
 export class Tower {
@@ -128,6 +157,11 @@ export class Tower {
             const dy = this.target.y - this.y;
             this.angle = (Math.atan2(this.target.y - this.y, this.target.x - this.x) * 180 / Math.PI + 90 + 360) % 360;
         }
+        if (this.type === "antiAir" && this.target) {
+            const dx = this.target.x - this.x;
+            const dy = this.target.y - this.y;
+            this.angle = (Math.atan2(this.target.y - this.y, this.target.x - this.x) * 180 / Math.PI + 90 + 360) % 360;
+        }
     }
     draw(ctx) {
     const size = 128;
@@ -145,6 +179,8 @@ export class Tower {
     let img;
     if (this.type === "cannon") {
         img = getClosestCannonImage(this.angle); 
+    } else if (this.type === "antiAir") {
+        img = getClosestAntiAirImage(this.angle);
     } else {
         img = Tower.images[this.type];
     }
@@ -164,3 +200,4 @@ export class Tower {
 }
 
 export { getClosestCannonImage };
+export { getClosestAntiAirImage };
