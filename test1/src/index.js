@@ -29,9 +29,11 @@ document.getElementById("level1-btn").onclick = () => {
   document.getElementById("sidebar").style.display = "block";
   document.getElementById("main-menu").style.display = "none";
   stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
   music.bgm_1.play();
   music.bgm_1.loop = true;
   loadLevel();
+  lastTimestamp = performance.now();
   gameLoop();
   document.getElementById("pause-btn").style.display = "block";
 };
@@ -43,9 +45,11 @@ document.getElementById("level2-btn").onclick = () => {
   document.getElementById("sidebar").style.display = "block";
   document.getElementById("main-menu").style.display = "none";
   stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
   music.bgm_2.play();
   music.bgm_2.loop = true;
   loadLevel();
+  lastTimestamp = performance.now();
   gameLoop();
   document.getElementById("pause-btn").style.display = "block";
 };
@@ -130,6 +134,7 @@ document.getElementById("retry-btn").onclick = () => {
 
 document.getElementById("back-menu-btn").onclick = () => {
   stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
   document.getElementById("game-over").style.display = "none";
   document.getElementById("main-menu").style.display = "block";
   document.getElementById("sidebar").style.display = "none";
@@ -149,6 +154,7 @@ document.getElementById("win-retry-btn").onclick = () => {
 
 document.getElementById("win-menu-btn").onclick = () => {
   stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
   document.getElementById("game-win").style.display = "none";
   document.getElementById("main-menu").style.display = "block";
   document.getElementById("sidebar").style.display = "none";
@@ -186,23 +192,39 @@ function showGameWin() {
 
 const pauseBtn = document.getElementById("pause-btn");
 const restartBtn = document.getElementById("restart-btn");
+const pauseMenuBtn = document.getElementById("pause-menu-btn");
 
 pauseBtn.onclick = () => {
   isPaused = !isPaused;
   pauseBtn.textContent = isPaused ? "▶ Continue" : "⏸ Pause";
   restartBtn.style.display = isPaused ? "block" : "none";
+  pauseMenuBtn.style.display = isPaused ? "block" : "none";
 };
 
 restartBtn.onclick = () => {
   isPaused = false;
   pauseBtn.textContent = "⏸ Pause";
   restartBtn.style.display = "none";
+  pauseMenuBtn.style.display = "none";
   stopAllAudio();
   cancelAnimationFrame(gameLoopId);
   resetGameState();
   lastTimestamp = performance.now();
   gameLoop();
   pauseBtn.style.display = "block";
+};
+
+pauseMenuBtn.onclick = () => {
+  isPaused = false;
+  pauseBtn.textContent = "⏸ Pause";
+  restartBtn.style.display = "none";
+  pauseMenuBtn.style.display = "none";
+  stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
+  document.getElementById("main-menu").style.display = "block";
+  document.getElementById("sidebar").style.display = "none";
+  pauseBtn.style.display = "none";
+  resetGameState();
 };
 
 document.addEventListener("keydown", (e) => {
@@ -642,9 +664,15 @@ function drawPauseOverlay() {
   );
   ctx.font = "28px Arial";
   ctx.fillText(
-    "Or click 🔄 Restart to restart the level",
+    "Or click Restart to restart the level",
     canvas.width / 2,
     canvas.height / 2 + 110
+  );
+  ctx.font = "28px Arial";
+  ctx.fillText(
+    "Or click Main Menu to return to menu",
+    canvas.width / 2,
+    canvas.height / 2 + 160
   );
   ctx.textAlign = "left";
   ctx.restore();
