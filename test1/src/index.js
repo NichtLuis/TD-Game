@@ -120,8 +120,10 @@ document.getElementById("exit-btn").onclick = () => {
 };
 document.getElementById("retry-btn").onclick = () => {
   stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
   resetGameState();
   document.getElementById("game-over").style.display = "none";
+  lastTimestamp = performance.now();
   gameLoop();
   document.getElementById("pause-btn").style.display = "block";
 };
@@ -132,14 +134,15 @@ document.getElementById("back-menu-btn").onclick = () => {
   document.getElementById("main-menu").style.display = "block";
   document.getElementById("sidebar").style.display = "none";
   document.getElementById("pause-btn").style.display = "none";
-  // Goes back to menu, resets the game state
   resetGameState();
 };
 
 document.getElementById("win-retry-btn").onclick = () => {
   stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
   resetGameState();
   document.getElementById("game-win").style.display = "none";
+  lastTimestamp = performance.now();
   gameLoop();
   document.getElementById("pause-btn").style.display = "block";
 };
@@ -182,9 +185,24 @@ function showGameWin() {
 }
 
 const pauseBtn = document.getElementById("pause-btn");
+const restartBtn = document.getElementById("restart-btn");
+
 pauseBtn.onclick = () => {
   isPaused = !isPaused;
   pauseBtn.textContent = isPaused ? "▶ Continue" : "⏸ Pause";
+  restartBtn.style.display = isPaused ? "block" : "none";
+};
+
+restartBtn.onclick = () => {
+  isPaused = false;
+  pauseBtn.textContent = "⏸ Pause";
+  restartBtn.style.display = "none";
+  stopAllAudio();
+  cancelAnimationFrame(gameLoopId);
+  resetGameState();
+  lastTimestamp = performance.now();
+  gameLoop();
+  pauseBtn.style.display = "block";
 };
 
 document.addEventListener("keydown", (e) => {
@@ -604,6 +622,7 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 let lastTimestamp = performance.now();
+let gameLoopId = null;
 
 function drawPauseOverlay() {
   ctx.save();
@@ -621,14 +640,20 @@ function drawPauseOverlay() {
     canvas.width / 2,
     canvas.height / 2 + 60
   );
+  ctx.font = "28px Arial";
+  ctx.fillText(
+    "Or click 🔄 Restart to restart the level",
+    canvas.width / 2,
+    canvas.height / 2 + 110
+  );
   ctx.textAlign = "left";
   ctx.restore();
 }
 
 function gameLoop(timestamp = performance.now()) {
+  gameLoopId = requestAnimationFrame(gameLoop);
   if (isPaused) {
     drawPauseOverlay();
-    requestAnimationFrame(gameLoop);
     return;
   }
 
@@ -693,7 +718,6 @@ function gameLoop(timestamp = performance.now()) {
       startWave();
     }
   }
-  requestAnimationFrame(gameLoop);
 }
 
 mapImage.onload = () => {
