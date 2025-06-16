@@ -614,11 +614,15 @@ function drawTowerUI() {
   ctx.fillStyle = "#5bc0de";
   ctx.fillRect(upgradeX, btnY, btnWidth, btnHeight);
   ctx.fillStyle = "#fff";
-  ctx.fillText("Upgrade", upgradeX + 10, btnY + 20);
   const upgradeCost = getUpgradeCost(selectedTower);
-  ctx.fillText("Upgrade", upgradeX + 10, btnY + 20);
+  if (selectedTower.level >= 3) {
+    ctx.fillText ("Max Level", upgradeX + 10, btnY + 20);
+  } else {
+    ctx.fillText("Upgrade", upgradeX + 10, btnY + 20);
+    ctx.fillText("Upgrade", upgradeX + 10, btnY + 20);
+    ctx.fillText("$" + upgradeCost, upgradeX + 30, btnY + 45);
+  }
   ctx.font = "12px Arial";
-  ctx.fillText("$" + upgradeCost, upgradeX + 30, btnY + 45);
 
   // Tower info
   ctx.fillStyle = "#fff";
