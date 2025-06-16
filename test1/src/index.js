@@ -379,7 +379,11 @@ function drawEnemies(deltaTime) {
     enemy.update(deltaTime);
     // Check if enemy reached the last waypoint
     if (enemy.waypointIndex >= waypoints.length) {
-      playerHealth -= 10;
+      if (enemy.type === "boss") {
+        playerHealth -= 10000; // Instant death for the bossie
+      } else {
+        playerHealth -= 10; 
+      }
       enemies.splice(i, 1);
       continue;
     }
