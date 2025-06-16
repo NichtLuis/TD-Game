@@ -235,7 +235,7 @@ document.addEventListener("keydown", (e) => {
     pauseBtn.click();
   }
   if (e.key === "Escape") {
-    selectedTowerType = null; // Deselect tower type
+    selectedTowerType = null; 
   }
 });
 
@@ -347,8 +347,12 @@ function drawTowerHover() {
   ctx.globalAlpha = 0.2;
   ctx.beginPath();
   ctx.arc(centerX, centerY, range, 0, Math.PI * 2);
-  ctx.fillStyle = placable ? "#00bfff" : "#ff4444";
-  ctx.fill();
+  if (playerMoney >= towerCosts[towerType]) {
+    ctx.fillStyle = placable ? "#00bfff" : "#ff4444";
+  } else {
+    ctx.fillStyle = "#ff4444"; // Not enough money
+  }
+  ctx.fill(); 
   ctx.restore();
 
   // Draw tower image with opacity
