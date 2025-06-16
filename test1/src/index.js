@@ -164,14 +164,14 @@ document.getElementById("win-menu-btn").onclick = () => {
 
 function resetGameState() {
   playerHealth = 100;
-  playerMoney = 500;
+  playerMoney = 50;
   towers.length = 0;
   enemies.length = 0;
   bullets.length = 0;
   lasers.length = 0;
   selectedTower = null;
   hoverTile = null;
-  currentWave = 9;
+  currentWave = 0;
   enemiesToSpawn = [];
   waveInProgress = false;
   waveTimer = 0;
