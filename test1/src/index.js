@@ -331,9 +331,9 @@ function drawTowerHover() {
   centerY += offsetY;
 
   // Get range for the tower type
-  let range = 200;
-  if (towerType === "cannon") range = 300;
-  else if (towerType === "antiAir") range = 250;
+  let range = 270;
+  if (towerType === "cannon") range = 230;
+  else if (towerType === "antiAir") range = 400;
 
   // Check if placable
   const placable =
