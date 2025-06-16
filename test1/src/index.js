@@ -164,14 +164,14 @@ document.getElementById("win-menu-btn").onclick = () => {
 
 function resetGameState() {
   playerHealth = 100;
-  playerMoney = 50;
+  playerMoney = 500;
   towers.length = 0;
   enemies.length = 0;
   bullets.length = 0;
   lasers.length = 0;
   selectedTower = null;
   hoverTile = null;
-  currentWave = 0;
+  currentWave = 9;
   enemiesToSpawn = [];
   waveInProgress = false;
   waveTimer = 0;
@@ -379,7 +379,11 @@ function drawEnemies(deltaTime) {
     enemy.update(deltaTime);
     // Check if enemy reached the last waypoint
     if (enemy.waypointIndex >= waypoints.length) {
-      playerHealth -= 10;
+      if (enemy.type === "boss") {
+        playerHealth -= 10000; // Instant death for the bossie
+      } else {
+        playerHealth -= 10; 
+      }
       enemies.splice(i, 1);
       continue;
     }
