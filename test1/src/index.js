@@ -303,7 +303,7 @@ function drawTowers(deltaTime) {
 }
 
 function drawTowerHover() {
-  if (!hoverTile || selectedTower) return;
+  if (!hoverTile || !selectedTowerType) return;
 
   // Tower preview
   const towerType =
@@ -566,6 +566,7 @@ canvas.addEventListener("click", (e) => {
     const towerX = tileX * 64 + 64;
     const towerY = tileY * 64 + 64;
     towers.push(new Tower(towerX, towerY, selectedTowerType));
+    selectedTowerType = null;
     // Mark the 2x2 area with 2 = occupied
     towerLayer[tileY][tileX] = 2;
     towerLayer[tileY][tileX + 1] = 2;
