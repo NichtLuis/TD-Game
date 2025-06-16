@@ -82,15 +82,15 @@ export class Tower {
 
         if (type == "tesla") {
             this.damage = 25;
-            this.fireRate = 35; 
+            this.fireRate = 37.5; 
             this.range = 200;
         } else if (type == "cannon") {
             this.damage = 100;
             this.fireRate = 150;
             this.range = 300; 
         } else if (type == "antiAir") {
-            this.damage = 35;
-            this.fireRate = 50;
+            this.damage = 100;
+            this.fireRate = 75;
             this.range = 250; 
         } else {
             this.damage = 15;

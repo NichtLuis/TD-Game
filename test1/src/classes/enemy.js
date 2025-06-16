@@ -37,8 +37,8 @@ export class Enemy {
             this.height = 128;
             this.frameH = 128;
             this.speed = 1;
-            this.health = 200;
-            this.maxHealth = 200;
+            this.health = 300;
+            this.maxHealth = 300;
             this.money = 5;
             this.isFlying = true;
             this.frameCount = 11;
@@ -49,8 +49,8 @@ export class Enemy {
             this.height = 160;
             this.frameH = 192;
             this.speed = 0.5;
-            this.health = 15000;
-            this.maxHealth = 15000;
+            this.health = 7500;
+            this.maxHealth = 7500;
             this.money = 50;
             this.isFlying = false;
             this.frameCount = 7;

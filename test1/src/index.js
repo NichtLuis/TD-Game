@@ -350,7 +350,7 @@ function drawTowerHover() {
   if (playerMoney >= towerCosts[towerType]) {
     ctx.fillStyle = placable ? "#00bfff" : "#ff4444";
   } else {
-    ctx.fillStyle = "#ff4444"; // Not enough money
+    ctx.fillStyle = "#ff4444"; 
   }
   ctx.fill(); 
   ctx.restore();
