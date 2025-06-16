@@ -234,6 +234,9 @@ document.addEventListener("keydown", (e) => {
   ) {
     pauseBtn.click();
   }
+  if (e.key === "Escape") {
+    selectedTowerType = null; // Deselect tower type
+  }
 });
 
 const towerCosts = {
@@ -339,7 +342,7 @@ function drawTowerHover() {
     canPlaceTowerAt(hoverTile.tileX, hoverTile.tileY + 1) &&
     canPlaceTowerAt(hoverTile.tileX + 1, hoverTile.tileY + 1);
 
-  // Draw range circle (blue if placable, red if not)
+  // Draw range circle (blue if placable (red if not enough gold)), red if not)
   ctx.save();
   ctx.globalAlpha = 0.2;
   ctx.beginPath();
